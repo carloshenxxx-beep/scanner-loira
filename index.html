@@ -42,7 +42,6 @@
     overflow-x:hidden;
   }
 
-  /* partículas + glow */
   .fx{
     position:fixed; inset:-40px;
     pointer-events:none;
@@ -57,10 +56,7 @@
     filter: blur(.2px);
     animation: floaty 8s ease-in-out infinite alternate;
   }
-  @keyframes floaty{
-    from{ transform: translateY(0) }
-    to{ transform: translateY(-14px) }
-  }
+  @keyframes floaty{ from{transform:translateY(0)} to{transform:translateY(-14px)} }
 
   .app{
     width:min(480px, 100%);
@@ -167,7 +163,6 @@
     box-shadow: 0 16px 40px rgba(34,197,94,.14);
   }
   .ghost{ background: rgba(255,255,255,.06) }
-  .danger{ background: rgba(255,59,48,.16); border-color: rgba(255,59,48,.40) }
 
   label{
     display:flex;
@@ -204,7 +199,6 @@
     transition: width .35s ease;
   }
 
-  /* terminal scan */
   .terminal{
     margin-top:12px;
     border-radius:18px;
@@ -227,15 +221,12 @@
     animation: scan 1.2s linear infinite;
     opacity:.9;
   }
-  @keyframes scan{
-    0%{transform:translateY(0)}
-    100%{transform:translateY(270px)}
-  }
+  @keyframes scan{ 0%{transform:translateY(0)} 100%{transform:translateY(270px)} }
   .ok{color:rgba(34,197,94,.95)}
   .warn{color:rgba(255,204,0,.95)}
   .err{color:rgba(255,59,48,.95)}
 
-  /* compat counter big */
+  /* compat */
   .big{
     font-family:var(--mono);
     font-size:34px;
@@ -252,7 +243,24 @@
     pointer-events:none;
   }
 
-  /* checkboxes premium */
+  /* scroll card for long text */
+  .scrollBox{
+    margin-top:10px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.20);
+    max-height: 48vh;
+    overflow:auto;
+    padding:12px 12px;
+  }
+  .scrollBox::-webkit-scrollbar{ width:10px }
+  .scrollBox::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,.15);
+    border-radius: 99px;
+    border:2px solid rgba(0,0,0,.25);
+  }
+
+  /* checkboxes */
   .checks{margin-top:10px; display:flex; flex-direction:column; gap:10px}
   .check{
     display:flex; gap:12px; align-items:flex-start;
@@ -269,10 +277,7 @@
   .check small{display:block; margin-top:3px; color:rgba(255,255,255,.62); font-family:var(--mono); font-size:11px}
 
   /* final cinematic */
-  .cinema{
-    position:relative;
-    overflow:hidden;
-  }
+  .cinema{ position:relative; overflow:hidden; }
   .cinema::before{
     content:"";
     position:absolute; inset:-2px;
@@ -284,7 +289,6 @@
     pointer-events:none;
   }
   .cinema.on::before{opacity:1}
-
   .reveal-line{
     opacity:0;
     transform: translateY(8px);
@@ -323,7 +327,6 @@
     color: rgba(255,255,255,.90);
   }
 
-  /* youtube embed */
   .ytWrap{
     margin-top:12px;
     border-radius:18px;
@@ -334,7 +337,6 @@
   }
   .ytWrap iframe{width:100%; height:240px; border:0; display:block}
 
-  /* hidden note */
   .hidden-note{
     margin-top:12px;
     font-family:var(--mono);
@@ -346,7 +348,6 @@
     user-select:none;
   }
 
-  /* modal premium */
   .modal{
     position:fixed; inset:0;
     display:none;
@@ -368,9 +369,7 @@
     border-bottom:1px solid rgba(255,255,255,.12);
     background: rgba(255,255,255,.04);
   }
-  .pop .head{
-    padding:12px 14px 10px;
-  }
+  .pop .head{ padding:12px 14px 10px; }
   .pop .head b{display:block; font-size:13px}
   .pop .head span{display:block; margin-top:2px; font-family:var(--mono); font-size:11px; color: rgba(255,255,255,.62)}
   .pop main{padding:14px}
@@ -410,7 +409,7 @@
 
   <main>
 
-    <!-- S1: abertura -->
+    <!-- S1 -->
     <section class="screen active" id="s1">
       <div class="card">
         <div class="kicker">BOOT → iniciar_experiência()</div>
@@ -427,7 +426,7 @@
       </div>
     </section>
 
-    <!-- S2: tela secreta real -->
+    <!-- S2 secret -->
     <section class="screen" id="s2">
       <div class="card">
         <div class="glow"></div>
@@ -468,7 +467,7 @@
       </div>
     </section>
 
-    <!-- S3: coleta com pegadinhas -->
+    <!-- S3 form -->
     <section class="screen" id="s3">
       <div class="card">
         <div class="kicker">FORM → dados_minimos()</div>
@@ -481,8 +480,8 @@
         <label>💬 Apelido <span>(opcional)</span></label>
         <input id="apelido" placeholder="Ex: Loira…" autocomplete="off">
 
-        <label>✨ Nível de beleza <span>(aceita: ∞)</span></label>
-        <input id="beleza" placeholder="∞" autocomplete="off">
+        <label>✨ Nível de beleza <span>(aceita: infinito)</span></label>
+        <input id="beleza" placeholder="Digite: infinito" autocomplete="off">
 
         <div class="btns">
           <button class="primary" id="btnFormNext">CONTINUAR</button>
@@ -493,7 +492,7 @@
       </div>
     </section>
 
-    <!-- S4: teste humor -->
+    <!-- S4 humor -->
     <section class="screen" id="s4">
       <div class="card">
         <div class="kicker">CHECK → calibrar_humor()</div>
@@ -528,7 +527,7 @@
       </div>
     </section>
 
-    <!-- S5: scanner -->
+    <!-- S5 scan -->
     <section class="screen" id="s5">
       <div class="card">
         <div class="kicker">SCAN → detectar_importancia()</div>
@@ -548,7 +547,7 @@
       </div>
     </section>
 
-    <!-- S6: compatibilidade infinito + erro -->
+    <!-- S6 compat (sem símbolo ∞) -->
     <section class="screen" id="s6">
       <div class="card">
         <div class="glow"></div>
@@ -558,13 +557,71 @@
         <p class="muted" id="compatHint">subindo…</p>
 
         <div class="btns">
-          <button class="good" id="btnToChoices" disabled>AVANÇAR</button>
+          <button class="good" id="btnToText" disabled>AVANÇAR</button>
           <button class="ghost" data-back="s5">VOLTAR</button>
         </div>
       </div>
     </section>
 
-    <!-- S7: escolhas (checkbox) -->
+    <!-- ✅ NOVA TELA (texto longo) -->
+    <section class="screen" id="s6b">
+      <div class="card">
+        <div class="kicker">NOTE → o_que_eu_gosto_em_você()</div>
+        <h2>Eu gosto…</h2>
+        <p class="muted">Essa parte é calma. Lê no seu tempo.</p>
+
+        <div class="scrollBox">
+          <p>
+            Gosto quando a gente sai e, em algum momento, eu me pego te olhando e sorrindo sozinho, sem nem perceber.
+            Não é pelo lugar, nem pelo que está em volta. É porque ali, naquele instante, eu sei que estou no melhor lugar do mundo.
+            Quando é eu e você, tudo fica mais simples, mais leve, mais certo.
+          </p>
+
+          <p>
+            Gosto quando a gente sai só nós dois e conversa sobre tudo. Sem pressa, sem roteiro, sem fingir nada.
+            A conversa vai indo, muda de assunto, volta, se perde e se encontra de novo. E eu gosto disso.
+            Gosto de sentir que o tempo desacelera quando a gente está junto.
+          </p>
+
+          <p>
+            Gosto muito quando você começa a falar da sua vida. Da sua faculdade, das coisas que já viveu, das histórias que carrega.
+            Tem um jeito seu de contar que prende minha atenção inteira. Eu ficaria o dia todo te ouvindo, conversando, só ali,
+            porque ouvir você é fácil, é bom. Gosto de ouvir a sua voz. Ela tem um jeito que acalma, que aproxima,
+            que faz o momento parecer seguro.
+          </p>
+
+          <p>
+            Gosto muito do seu sorriso. Do jeito que só você tem. Um sorriso que chega antes das palavras,
+            que muda o clima, que deixa tudo melhor sem esforço. Gosto do seu jeito também — desse jeito que não se explica, mas se sente.
+            Da sua presença, que é diferente de qualquer outra, que se impõe sem precisar de nada além de existir.
+          </p>
+
+          <p>
+            Gosto de estar perto de você. Do seu abraço, do toque que acontece naturalmente, sem ser forçado.
+            Da proximidade que vai surgindo no meio da conversa, como se sempre tivesse sido assim.
+            Gosto da calma que você passa, da atenção, do cuidado nos detalhes pequenos, que são os que mais ficam.
+          </p>
+
+          <p>
+            Gosto de sentir que, quando estamos juntos, o momento é nosso. Sem pressa pra ir embora, sem distração,
+            sem metade da atenção em outro lugar. Gosto de poder ser eu ali, do jeito que sou, sem precisar provar nada.
+          </p>
+
+          <p>
+            E talvez seja isso que eu mais gosto: a sensação de que estar com você não exige esforço. É só estar.
+            Conversar, ouvir, sorrir, compartilhar histórias e silêncios. Como se o mundo diminuísse só pra caber a gente ali,
+            simples, verdadeiro e do jeito certo.
+          </p>
+        </div>
+
+        <div class="btns">
+          <button class="primary" id="btnToChoices2">CONTINUAR</button>
+          <button class="ghost" data-back="s6">VOLTAR</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- S7 choices -->
     <section class="screen" id="s7">
       <div class="card">
         <div class="kicker">CHOICE → personalizar_surpresa()</div>
@@ -599,12 +656,12 @@
 
         <div class="btns">
           <button class="primary" id="btnBuildSurprise">REVELAR</button>
-          <button class="ghost" data-back="s6">VOLTAR</button>
+          <button class="ghost" data-back="s6b">VOLTAR</button>
         </div>
       </div>
     </section>
 
-    <!-- S8: surpresa baseada nas escolhas -->
+    <!-- S8 -->
     <section class="screen" id="s8">
       <div class="card">
         <div class="kicker">SURPRISE → gerar_resposta()</div>
@@ -618,7 +675,7 @@
       </div>
     </section>
 
-    <!-- S9: surpresa dentro da surpresa + cartada final -->
+    <!-- S9 -->
     <section class="screen" id="s9">
       <div class="card">
         <div class="kicker">SURPRISE++ → detalhe_escondido()</div>
@@ -632,13 +689,12 @@
       </div>
     </section>
 
-    <!-- S10: final cinematográfico -->
+    <!-- S10 final -->
     <section class="screen" id="s10">
       <div class="card cinema" id="cinema">
         <div class="kicker">FINAL → dizer_o_que_importa()</div>
         <h2 id="finalTitle">Loira…</h2>
 
-        <!-- linhas com efeito (silencioso) -->
         <p class="reveal-line" id="L1"><b>Eu amo muito você e não quero que você saia da minha vida nunca.</b></p>
         <p class="reveal-line" id="L2">Mesmo com a distância, você é presença.</p>
         <p class="reveal-line" id="L3">Está nos meus pensamentos, no meu cuidado e no jeito que eu torço por você.</p>
@@ -673,7 +729,6 @@
   </footer>
 </div>
 
-<!-- modal -->
 <div class="modal" id="modal">
   <div class="pop" id="pop">
     <header>
@@ -692,14 +747,12 @@
 </div>
 
 <script>
-  // Música escolhida (YouTube)
   const YT_ID = "wMne8UDPN7A";
 
-  // helpers
   const $ = (id)=>document.getElementById(id);
   const setState = (v)=>{ $("st").textContent=v; $("state").textContent=`state=${v}`; };
 
-  const screens = ["s1","s2","s3","s4","s5","s6","s7","s8","s9","s10"]
+  const screens = ["s1","s2","s3","s4","s5","s6","s6b","s7","s8","s9","s10"]
     .reduce((a,id)=>(a[id]=$(id),a),{});
 
   function go(id){
@@ -708,7 +761,6 @@
     window.scrollTo({top:0, behavior:"smooth"});
   }
 
-  // modal
   const modal = $("modal"), pop = $("pop"), mTitle=$("mTitle"), mCode=$("mCode"), mMsg=$("mMsg");
   function showModal(title, code, msg){
     mTitle.textContent = title;
@@ -723,16 +775,14 @@
   $("mOk").addEventListener("click", hideModal);
   modal.addEventListener("click", (e)=>{ if(e.target===modal) hideModal(); });
 
-  // back buttons
   document.querySelectorAll("[data-back]").forEach(b=>{
     b.addEventListener("click", ()=>go(b.getAttribute("data-back")));
   });
 
-  // session
   const session = {
     nome:"",
     apelido:"Loira",
-    beleza:"∞",
+    beleza:"infinito",
     q1:"leve", q2:"teletransporte", q3:"simples",
     secret:"rir",
     choices:{c1:false,c2:false,c3:false}
@@ -740,7 +790,6 @@
 
   function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
 
-  // S1 start
   setState("IDLE");
   $("p1").style.width = "10%";
 
@@ -758,7 +807,6 @@
     go("s2");
   });
 
-  // S2 secret choose
   $("btnSecretGo").addEventListener("click", ()=>{
     const v = document.querySelector('input[name="secret"]:checked')?.value || "rir";
     session.secret = v;
@@ -781,10 +829,9 @@
     go("s3");
   });
 
-  // S3 form with pegadinhas
   function normalizeBeauty(raw){
     const v = (raw||"").trim().toLowerCase();
-    if(v==="∞" || v==="infinito" || v==="infinita") return "∞";
+    if(v==="infinito" || v==="infinita") return "infinito";
     return null;
   }
 
@@ -793,7 +840,6 @@
     const apelido = ($("apelido").value||"").trim();
     const beleza = ($("beleza").value||"").trim();
 
-    // pegadinha 1: nome obrigatório com “drama técnico”
     if(!nome){
       showModal("Entrada obrigatória", "SYS-101",
         "Campo <b>Nome</b> não pode ficar vazio 😌<br><br>" +
@@ -801,23 +847,20 @@
       return;
     }
 
-    // apelido: se deixar vazio, o sistema “decide”
     session.apelido = apelido || "Loira";
     session.nome = nome;
 
-    // pegadinha 2: beleza
     const ok = normalizeBeauty(beleza);
     if(!ok){
       showModal("ERRO CRÍTICO", "SYS-666",
         "Valor inválido.<br><br>" +
-        "🔧 Correção automática aplicada: <b>∞</b>.<br>" +
+        "🔧 Correção automática aplicada: <b>infinito</b>.<br>" +
         "Motivo: o sistema não aceita beleza baixa.");
-      $("beleza").value="∞";
+      $("beleza").value="infinito";
       return;
     }
-    session.beleza="∞";
+    session.beleza="infinito";
 
-    // pegadinha 3: se ela escreveu “Loira” no nome, zoa carinhoso
     if(nome.toLowerCase()==="loira"){
       showModal("Aviso", "SYS-112",
         "Você colocou <b>Loira</b> no nome…<br>" +
@@ -831,7 +874,6 @@
     go("s4");
   });
 
-  // S4 to scan
   $("btnToScan").addEventListener("click", ()=>{
     session.q1 = $("q1").value;
     session.q2 = $("q2").value;
@@ -841,23 +883,13 @@
     runScan();
   });
 
-  // S5 scan
   async function runScan(){
     $("term").textContent = "";
     $("p2").style.width="0%";
     $("btnToCompat").disabled = true;
 
-    const moodTxt = {
-      leve:"leve", seria:"séria", cansada:"cansada", saudade:"com saudade"
-    }[session.q1] || "leve";
-
-    const powerTxt = {
-      teletransporte:"teletransporte",
-      parar_tempo:"parar o tempo",
-      ler_mentes:"ler mentes",
-      cura:"cura"
-    }[session.q2] || "teletransporte";
-
+    const moodTxt = {leve:"leve", seria:"séria", cansada:"cansada", saudade:"com saudade"}[session.q1] || "leve";
+    const powerTxt = {teletransporte:"teletransporte", parar_tempo:"parar o tempo", ler_mentes:"ler mentes", cura:"cura"}[session.q2] || "teletransporte";
     const styleTxt = {simples:"simples", intensa:"intensa"}[session.q3] || "simples";
 
     const lines = [
@@ -894,47 +926,49 @@
     runCompat();
   });
 
-  // S6 compat infinite -> error poetic
+  // ✅ compat sem símbolo ∞
   async function runCompat(){
-    $("btnToChoices").disabled = true;
+    $("btnToText").disabled = true;
     const el = $("compat");
     const hint = $("compatHint");
     el.textContent = "100%";
     hint.textContent = "subindo…";
 
-    const seq = [100, 180, 260, 380, 520, 740, 980, 1300, 2100, 3800];
+    const seq = [100, 180, 260, 380, 520, 740, 980, 1300, 2100, 3800, 9999];
     for(const n of seq){
       el.textContent = `${n}%`;
       await sleep(120);
     }
 
-    // vira infinito
-    el.textContent = "∞";
-    hint.textContent = "…";
+    // “estoura” sem usar símbolo de infinito
+    el.textContent = "VALOR INFINITO";
     await sleep(450);
 
-    // quebra com erro poético
     hint.innerHTML =
       `<span class="err">⚠️ ERRO DE CÁLCULO</span><br>` +
-      `A compatibilidade detectada é grande demais.<br>` +
-      `Nem o sistema é capaz de calcular algo que cresce toda vez que você aparece.`;
+      `A nossa compatibilidade é tão grande que nem o sistema é capaz de calcular.`;
     await sleep(250);
 
-    $("btnToChoices").disabled = false;
+    $("btnToText").disabled = false;
   }
 
-  $("btnToChoices").addEventListener("click", ()=>{
+  // Ir para a nova tela de texto longo
+  $("btnToText").addEventListener("click", ()=>{
+    setState("NOTE");
+    go("s6b");
+  });
+
+  // continuar da tela longa para escolhas
+  $("btnToChoices2").addEventListener("click", ()=>{
     setState("CHOICE");
     go("s7");
   });
 
-  // S7 build surprise from choices
   $("btnBuildSurprise").addEventListener("click", ()=>{
     session.choices.c1 = $("c1").checked;
     session.choices.c2 = $("c2").checked;
     session.choices.c3 = $("c3").checked;
 
-    // se não marcou nada, pegadinha fofa
     if(!session.choices.c1 && !session.choices.c2 && !session.choices.c3){
       showModal("Escolha necessária", "SYS-301",
         "Marca pelo menos <b>uma</b>…<br><br>" +
@@ -947,13 +981,11 @@
     renderSurprise();
   });
 
-  // S8 dynamic surprise
   function renderSurprise(){
     const {c1,c2,c3} = session.choices;
     let title = "Surpresa";
     let textParts = [];
 
-    // mistura D: emocional + curioso + poético
     if(c1){
       title = "Uma verdade";
       textParts.push("Sem exagero: você é alguém que faz diferença.");
@@ -968,7 +1000,6 @@
       textParts.push("E eu gosto do jeito que você existe.");
     }
 
-    // tempero do botão proibido
     if(session.secret==="surpresa"){
       textParts.push("Bônus desbloqueado: isso aqui ficou mais fofo do que eu planejei.");
     }
@@ -983,15 +1014,12 @@
     renderInsideSurprise();
   });
 
-  // S9 surprise inside + cartada final (pre-final)
   function renderInsideSurprise(){
     const {c1,c2,c3} = session.choices;
-
     let msg = [];
     msg.push("Ok… isso aqui é a parte que eu não colocaria em uma conversa comum.");
     msg.push("Então eu escondi dentro do sistema.");
 
-    // cartada varia conforme escolhas (mas sempre forte)
     if(c1 && c3){
       msg.push("<br><b>Você é importante pra mim de um jeito bem sério.</b>");
       msg.push("E eu não falo isso pra qualquer pessoa.");
@@ -1012,7 +1040,6 @@
     await cinematicReveal();
   });
 
-  // S10 cinematic reveal
   async function cinematicReveal(){
     const cinema = $("cinema");
     cinema.classList.add("on");
@@ -1021,7 +1048,6 @@
     lines.forEach(l=>l.classList.remove("show"));
     $("hiddenNote").style.opacity = 0;
 
-    // revela com timing “silencioso”
     await sleep(180);
     lines[0].classList.add("show");
     await sleep(520);
@@ -1034,23 +1060,19 @@
     lines[4].classList.add("show");
   }
 
-  // play music (youtube)
   $("btnPlay").addEventListener("click", ()=>{
     const wrap = $("ytWrap");
     const iframe = $("yt");
     wrap.style.display = "block";
     iframe.src = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&playsinline=1&rel=0`;
 
-    // depois que a música começa, aparece o bilhete escondido
     setTimeout(()=>{ $("hiddenNote").style.opacity = 1; }, 6500);
   });
 
-  // show photos
   $("btnShowPhotos").addEventListener("click", ()=>{
     $("gallery").style.display = "grid";
   });
 
-  // hidden note -> cartada final escondida
   $("hiddenNote").addEventListener("click", ()=>{
     showModal("Cartada final", "SYS-LOVE",
       "Algumas pessoas não chegam pra ocupar espaço.<br>" +
