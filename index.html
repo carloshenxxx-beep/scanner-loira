@@ -241,9 +241,15 @@ function scan(){
 }
 
 function playMusic(){
-  document.getElementById("music").play();
+  const audio = document.getElementById("music");
+  audio.volume = 1.0;
+  audio.currentTime = 0;
+  audio.play().catch(() => {
+    alert("Toque novamente no botão para iniciar a música 🎵");
+  });
 }
 </script>
 
 </body>
 </html>
+
