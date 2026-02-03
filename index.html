@@ -3,210 +3,815 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Scanner de Compatibilidade™</title>
-
+  <title>Verificação de Compatibilidade™</title>
   <style>
     :root{
-      --bg1:#070712; --bg2:#0b1222; --card:#0a0f1e;
-      --txt:#e8eefc; --muted:#a9b5d3; --accent:#5b5cff; --good:#22c55e;
+      --bg:#06060f;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.085);
+      --line: rgba(255,255,255,.12);
+      --txt: rgba(255,255,255,.93);
+      --muted: rgba(255,255,255,.66);
+      --accent: #6d5cff;
+      --accent2:#22c55e;
+      --warn:#ffcc00;
+      --danger:#ff3b30;
+      --shadow: 0 25px 90px rgba(0,0,0,.65);
+      --radius: 20px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     }
     *{box-sizing:border-box}
     body{
-      margin:0; min-height:100vh; display:flex; justify-content:center; align-items:center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: linear-gradient(160deg, var(--bg1), var(--bg2));
-      color:var(--txt);
-      padding:18px;
+      margin:0;
+      min-height:100svh;
+      font-family: var(--sans);
+      color: var(--txt);
+      background:
+        radial-gradient(900px 620px at 12% 12%, rgba(109,92,255,.22), transparent 60%),
+        radial-gradient(900px 620px at 88% 82%, rgba(34,197,94,.14), transparent 58%),
+        radial-gradient(800px 520px at 70% 20%, rgba(255,204,0,.10), transparent 55%),
+        var(--bg);
+      display:grid;
+      place-items:center;
+      padding:16px;
+      overflow-x:hidden;
     }
+
+    /* partículas */
+    .fx{
+      position:fixed; inset:0; pointer-events:none;
+      background:
+        radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.30), transparent 60%),
+        radial-gradient(1px 1px at 60% 10%, rgba(255,255,255,.22), transparent 60%),
+        radial-gradient(1px 1px at 80% 40%, rgba(255,255,255,.20), transparent 60%),
+        radial-gradient(1px 1px at 15% 75%, rgba(255,255,255,.18), transparent 60%),
+        radial-gradient(1px 1px at 55% 85%, rgba(255,255,255,.20), transparent 60%);
+      opacity:.6;
+      animation: floaty 7s ease-in-out infinite alternate;
+    }
+    @keyframes floaty{
+      from{transform: translateY(0)}
+      to{transform: translateY(-10px)}
+    }
+
     .app{
-      width:min(460px, 100%);
-      border-radius:26px;
-      padding:16px;
-      background: rgba(10,15,30,.9);
-      box-shadow: 0 20px 70px rgba(0,0,0,.65);
+      width: min(460px, 100%);
+      border-radius: 28px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.06));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
     }
+
     header{
-      display:flex; justify-content:space-between; margin-bottom:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:14px 14px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
     }
-    .status{
-      font-size:11px; padding:6px 10px; border-radius:999px;
-      background: rgba(255,255,255,.1);
-      color:var(--muted);
+    .brand{min-width:0}
+    .brand b{
+      display:block;
+      font-size:13px;
+      letter-spacing:.2px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
-    .card{
-      background:#020617;
-      border-radius:20px;
-      padding:16px;
+    .brand span{
+      display:block;
+      margin-top:2px;
+      font-family: var(--mono);
+      font-size:11px;
+      color: var(--muted);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
-    .screen{display:none}
+    .pill{
+      font-family: var(--mono);
+      font-size:11px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.85);
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    main{padding:14px}
+    .screen{display:none; animation: in .18s ease both}
     .screen.active{display:block}
-    h2,h3{margin:0 0 8px}
-    p{margin:8px 0; color:var(--muted); line-height:1.45}
-    button{
-      width:100%; border:none; border-radius:16px; padding:12px;
-      background:var(--accent); color:white; font-weight:700; cursor:pointer;
+    @keyframes in{from{opacity:0; transform: translateY(12px)} to{opacity:1; transform: translateY(0)}}
+
+    .card{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      border-radius: var(--radius);
+      padding:14px;
+    }
+    .kicker{
+      font-family: var(--mono);
+      font-size:11px;
+      color: var(--muted);
+      margin-bottom:10px;
+    }
+    h1,h2{margin:0 0 10px}
+    h1{font-size:18px; font-weight:900}
+    h2{font-size:15px; font-weight:900}
+    p{margin:8px 0; color: rgba(255,255,255,.83); line-height:1.45}
+
+    .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
+    .tile{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      border-radius: 18px;
+      padding:12px;
+    }
+    .tile b{display:block; font-size:13px}
+    .tile small{display:block; margin-top:4px; font-family:var(--mono); color:rgba(255,255,255,.60); font-size:11px}
+
+    label{
+      display:flex;
+      justify-content:space-between;
+      color: var(--muted);
+      font-size:12px;
       margin-top:10px;
     }
-    input{
-      width:100%; padding:12px; margin-top:8px;
-      border-radius:14px; border:none;
-      background:#020617; color:white;
+    input, select{
+      width:100%;
+      margin-top:8px;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color: var(--txt);
+      outline:none;
+      font-size:14px;
     }
-    .log{
-      font-family: monospace; font-size:12px;
-      background:#020617; padding:12px;
-      border-radius:14px; min-height:120px;
-      white-space:pre-wrap;
+    input::placeholder{color: rgba(255,255,255,.35)}
+    .hint{margin-top:8px; font-family:var(--mono); font-size:11px; color: rgba(255,255,255,.58)}
+
+    .btns{display:flex; gap:10px; margin-top:12px}
+    button{
+      width:100%;
+      padding:12px 14px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.09);
+      color: rgba(255,255,255,.92);
+      font-weight:900;
+      cursor:pointer;
+      transition: transform .08s ease, filter .15s ease;
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
     }
+    button:active{transform: translateY(1px)}
+    .primary{
+      background: linear-gradient(180deg, rgba(109,92,255,.95), rgba(89,70,230,.95));
+      border-color: rgba(109,92,255,.45);
+    }
+    .good{
+      background: linear-gradient(180deg, rgba(34,197,94,.85), rgba(22,163,74,.85));
+      border-color: rgba(34,197,94,.40);
+    }
+    .ghost{background: rgba(255,255,255,.06)}
+    .danger{background: rgba(255,59,48,.16); border-color: rgba(255,59,48,.35)}
+
     .progress{
-      height:10px; background:#1e293b; border-radius:20px;
-      overflow:hidden; margin-top:10px;
+      height: 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      overflow:hidden;
+      margin-top:12px;
     }
     .bar{
-      height:100%; width:0%;
-      background:linear-gradient(90deg,var(--good),var(--accent));
-      transition:.4s;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(34,197,94,.95), rgba(109,92,255,.95));
+      transition: width .35s ease;
     }
+
+    .terminal{
+      margin-top:12px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.12));
+      padding:12px;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height:1.42;
+      min-height: 150px;
+      white-space: pre-wrap;
+      position:relative;
+      overflow:hidden;
+    }
+    .scanline{
+      position:absolute; left:0; right:0; height:2px;
+      background: rgba(255,204,0,.90);
+      box-shadow: 0 0 18px rgba(255,204,0,.30);
+      top: -3px;
+      animation: scan 1.2s linear infinite;
+      opacity:.9;
+    }
+    @keyframes scan{
+      0%{transform: translateY(0)}
+      100%{transform: translateY(260px)}
+    }
+
+    .tag{opacity:.95}
+    .ok{color: rgba(34,197,94,.95)}
+    .warn{color: rgba(255,204,0,.95)}
+    .err{color: rgba(255,59,48,.95)}
+
+    .kpis{display:flex; flex-direction:column; gap:10px; margin-top:12px}
+    .kpi{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+    }
+    .kpi .ico{
+      width:30px; height:30px; border-radius:12px;
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.08);
+      flex:0 0 auto;
+    }
+    .kpi b{font-weight:900}
+    .kpi small{display:block; margin-top:2px; color: rgba(255,255,255,.62); font-family:var(--mono); font-size:11px}
+
     .gallery{
-      display:grid; grid-template-columns:1fr 1fr;
-      gap:10px; margin-top:14px;
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+      margin-top:12px;
     }
-    .gallery img{
-      width:100%; border-radius:14px;
+    .ph{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      overflow:hidden;
+      background: rgba(255,255,255,.06);
+      aspect-ratio: 1 / 1;
+      position:relative;
     }
-    .yt{
-      margin-top:12px; border-radius:16px; overflow:hidden;
+    .ph img{width:100%; height:100%; object-fit:cover; display:block}
+    .ph span{
+      position:absolute; left:10px; right:10px; bottom:10px;
+      padding:8px 10px;
+      border-radius:999px;
+      background: rgba(0,0,0,.40);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(6px);
+      font-size:11px;
+      color: rgba(255,255,255,.90);
     }
-    iframe{width:100%; height:240px; border:0}
+
+    /* modal (mensagens/alertas) */
+    .modal{
+      position:fixed; inset:0;
+      display:none;
+      place-items:center;
+      padding:16px;
+      background: rgba(0,0,0,.72);
+      z-index:99;
+    }
+    .modal.show{display:grid}
+    .pop{
+      width:min(460px, 100%);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(10,10,14,.92);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .pop header{
+      border-bottom:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+    .pop .head{
+      padding:12px 14px 10px;
+    }
+    .pop .head b{display:block; font-size:13px}
+    .pop .head span{display:block; margin-top:2px; font-family:var(--mono); font-size:11px; color: rgba(255,255,255,.62)}
+    .pop main{padding:14px}
+    .pop p{margin:0}
+    .shake{animation: shake .22s ease}
+    @keyframes shake{0%,100%{transform:translateX(0)} 25%{transform:translateX(-7px)} 75%{transform:translateX(7px)}}
+
+    /* youtube reveal */
+    .ytWrap{
+      margin-top:12px;
+      border-radius: 18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      display:none;
+    }
+    .ytWrap iframe{width:100%; height:240px; border:0; display:block}
+
+    footer{
+      padding: 10px 14px 14px;
+      border-top:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(255,255,255,.55);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+    }
   </style>
 </head>
 
 <body>
+  <div class="fx"></div>
 
-<div class="app">
+  <div class="app">
+    <header>
+      <div class="brand">
+        <b>Verificação de Compatibilidade™</b>
+        <span id="sub">alvo: Loira • protocolo: sorriso</span>
+      </div>
+      <div class="pill" id="pill">STATUS: <span id="st">IDLE</span></div>
+    </header>
 
-<header>
-  <div>Scanner de Compatibilidade™</div>
-  <div class="status" id="status">IDLE</div>
-</header>
+    <main>
+      <!-- S1: splash -->
+      <section class="screen active" id="s1">
+        <div class="card">
+          <div class="kicker">BOOT → carregar_sinceridade()</div>
+          <h1>Oi… 😌</h1>
+          <p>Eu fiz isso de um jeito diferente porque <b>tem coisas que eu não queria dizer de forma comum</b>.</p>
 
-<!-- TELA 1 -->
-<div class="screen active" id="s1">
-  <div class="card">
-    <h2>Oi, Loira 😌</h2>
-    <p>Isso aqui é só um teste… mas o resultado eu já imagino.</p>
-    <button onclick="go(2)">COMEÇAR</button>
+          <div class="grid2" style="margin-top:12px">
+            <div class="tile">
+              <b>Segurança</b>
+              <small>Criptografia: carinho</small>
+            </div>
+            <div class="tile">
+              <b>Objetivo</b>
+              <small>Arrancar um sorriso</small>
+            </div>
+            <div class="tile">
+              <b>Precisão</b>
+              <small>Alta (me conheço)</small>
+            </div>
+            <div class="tile">
+              <b>Resultado</b>
+              <small>Surpresa no final</small>
+            </div>
+          </div>
+
+          <div class="btns">
+            <button class="primary" id="start">INICIAR</button>
+            <button class="ghost" id="secret">botão proibido</button>
+          </div>
+
+          <div class="progress"><div class="bar" id="p1"></div></div>
+          <div class="hint">Dica: o “botão proibido” libera um easter egg 😶‍🌫️</div>
+        </div>
+      </section>
+
+      <!-- S2: dados -->
+      <section class="screen" id="s2">
+        <div class="card">
+          <div class="kicker">FORM → dados_minimos()</div>
+          <h2>Rapidinho…</h2>
+          <p>Prometo não parecer interrogatório. Só preciso de alguns dados “oficiais”.</p>
+
+          <label>👤 Nome <span class="tag">(obrigatório)</span></label>
+          <input id="nome" placeholder="Digite seu nome…" value="">
+
+          <label>💬 Apelido <span class="tag">(opcional)</span></label>
+          <input id="apelido" placeholder="Ex: Loira…" value="">
+
+          <label>✨ Nível de beleza <span class="tag">(aceita: ∞)</span></label>
+          <input id="beleza" placeholder="∞" value="">
+          <div class="hint">Observação: o sistema é exigente. Muito.</div>
+
+          <div class="btns">
+            <button class="primary" id="toQuiz">CONTINUAR</button>
+            <button class="ghost" data-back="s1">VOLTAR</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- S3: mini-quiz (mais etapas) -->
+      <section class="screen" id="s3">
+        <div class="card">
+          <div class="kicker">CHECK → calibrar_sorrisos()</div>
+          <h2>Teste de humor (3 perguntas)</h2>
+          <p>Não existe resposta certa… só respostas que deixam isso mais fofo 😄</p>
+
+          <label>1) Hoje você tá mais…</label>
+          <select id="q1">
+            <option value="leve">Leve</option>
+            <option value="séria">Séria</option>
+            <option value="cansada">Cansada</option>
+            <option value="com_saudade">Com saudade de alguém 👀</option>
+          </select>
+
+          <label>2) Escolha um superpoder</label>
+          <select id="q2">
+            <option value="teletransporte">Teletransporte (pra encurtar distância)</option>
+            <option value="parar_tempo">Parar o tempo (só pra conversar)</option>
+            <option value="ler_mentes">Ler mentes (perigoso)</option>
+            <option value="cura">Cura (pra cuidar de quem importa)</option>
+          </select>
+
+          <label>3) Você prefere uma coisa simples ou intensa?</label>
+          <select id="q3">
+            <option value="simples">Simples (mas de verdade)</option>
+            <option value="intensa">Intensa (mas com calma)</option>
+          </select>
+
+          <div class="btns">
+            <button class="primary" id="toScan">INICIAR SCANNER</button>
+            <button class="ghost" data-back="s2">VOLTAR</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- S4: scan (dinâmico) -->
+      <section class="screen" id="s4">
+        <div class="card">
+          <div class="kicker">SCAN → detectar_importancia()</div>
+          <h2>Escaneando…</h2>
+          <p>Fica tranquila. Eu só tô “provando” o que eu já sinto.</p>
+
+          <div class="terminal">
+            <div class="scanline"></div>
+            <div id="term"></div>
+          </div>
+
+          <div class="progress"><div class="bar" id="p2"></div></div>
+
+          <div class="btns">
+            <button class="primary" id="toReport" disabled>VER RELATÓRIO</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- S5: relatório -->
+      <section class="screen" id="s5">
+        <div class="card">
+          <div class="kicker">REPORT → matemática_do_coração()</div>
+          <h2>Relatório Oficial</h2>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="ico">📈</div>
+              <div>
+                <b>Compatibilidade</b>
+                <small><span id="pct">100%</span> (subindo…)</small>
+              </div>
+            </div>
+
+            <div class="kpi">
+              <div class="ico">💫</div>
+              <div>
+                <b>Impacto</b>
+                <small id="impact">alto… e aumentando cada vez que você aparece.</small>
+              </div>
+            </div>
+
+            <div class="kpi">
+              <div class="ico">🔓</div>
+              <div>
+                <b>Resultado</b>
+                <small>Acesso permitido para a loira mais linda do mundo</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="btns">
+            <button class="good" id="toFinal">DESBLOQUEAR FINAL ✨</button>
+            <button class="ghost" data-back="s4">VOLTAR</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- S6: final cinematográfico -->
+      <section class="screen" id="s6">
+        <div class="card">
+          <div class="kicker">FINAL → dizer_o_que_importa()</div>
+          <h2 id="finalTitle">Loira…</h2>
+
+          <!-- FRASE FINAL NOVA, IMPACTANTE, SEM NAMORO -->
+          <p id="finalText">
+            Eu fiz isso só pra te arrancar um sorriso… mas também pra te deixar uma verdade bem clara:
+            <b>você é importante pra mim de um jeito que eu não sei fingir.</b><br><br>
+            Eu não quero que você saia da minha vida.  
+            Se um dia você estiver bem, eu vou comemorar com você.  
+            Se estiver em um dia difícil, eu vou estar aqui do seu lado — do meu jeito — mas de verdade.<br><br>
+            <b>Conta comigo.</b> Sempre.
+          </p>
+
+          <div class="btns">
+            <button class="primary" id="play">▶ TOCAR MÚSICA</button>
+            <button class="ghost" id="reveal">✨ MOSTRAR SURPRESA</button>
+          </div>
+          <div class="hint">No celular, a música só toca depois que tocar no botão.</div>
+
+          <!-- YouTube (revela no play) -->
+          <div class="ytWrap" id="ytWrap">
+            <iframe id="yt" src="" allow="autoplay; encrypted-media" allowfullscreen title="Música"></iframe>
+          </div>
+
+          <!-- fotos -->
+          <div class="gallery">
+            <div class="ph"><img src="./foto1.jpg" alt="Foto 1"><span>📸</span></div>
+            <div class="ph"><img src="./foto2.jpg" alt="Foto 2"><span>📸</span></div>
+            <div class="ph"><img src="./foto3.jpg" alt="Foto 3"><span>📸</span></div>
+            <div class="ph"><img src="./foto4.jpg" alt="Foto 4"><span>📸</span></div>
+          </div>
+
+          <div class="btns" style="margin-top:14px">
+            <button class="ghost" id="restart">REINICIAR</button>
+            <button class="primary" id="shareTip">COMO ENVIAR</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>© Dev do Crush</span>
+      <span id="state">state=IDLE</span>
+    </footer>
   </div>
-</div>
 
-<!-- TELA 2 -->
-<div class="screen" id="s2">
-  <div class="card">
-    <h3>Dados básicos</h3>
-    <input id="nome" placeholder="Seu nome">
-    <input id="apelido" placeholder="Apelido (se quiser)">
-    <input id="beleza" placeholder="Nível de beleza (∞)">
-    <button onclick="validar()">VALIDAR</button>
-  </div>
-</div>
-
-<!-- TELA 3 -->
-<div class="screen" id="s3">
-  <div class="card">
-    <h3>Escaneando…</h3>
-    <div class="log" id="log"></div>
-    <div class="progress"><div class="bar" id="bar"></div></div>
-    <button onclick="go(4)">VER RESULTADO</button>
-  </div>
-</div>
-
-<!-- TELA 4 -->
-<div class="screen" id="s4">
-  <div class="card">
-    <h3>Relatório</h3>
-    <p><b>Compatibilidade:</b> <span id="pct">100%</span></p>
-    <p><b>Risco:</b> grande chance de eu querer cuidar de você todos os dias.</p>
-    <p><b>Resultado:</b> Acesso permitido para a loira mais linda do mundo</p>
-    <button onclick="go(5)">DESBLOQUEAR 💛</button>
-  </div>
-</div>
-
-<!-- TELA FINAL -->
-<div class="screen" id="s5">
-  <div class="card">
-    <h3>Loira…</h3>
-    <p>
-      Eu fiz isso só pra te arrancar um sorriso…  
-      mas também pra te falar uma coisa bem simples:  
-      <b>eu te amo.</b><br><br>
-      Você é muito importante pra mim.  
-      Não quero perder você e não quero que saia nunca da minha vida.
-    </p>
-
-    <button onclick="tocar()">▶ TOCAR MÚSICA</button>
-
-    <div class="yt" id="yt" style="display:none">
-      <iframe
-        src="https://www.youtube.com/embed/wMne8UDPN7A?autoplay=1&playsinline=1&rel=0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen>
-      </iframe>
+  <!-- modal -->
+  <div class="modal" id="modal">
+    <div class="pop" id="pop">
+      <header>
+        <div class="head">
+          <b id="mTitle">Aviso</b>
+          <span id="mCode">SYS-000</span>
+        </div>
+      </header>
+      <main>
+        <p id="mMsg"></p>
+        <div class="btns" style="margin-top:12px">
+          <button class="primary" id="mOk">OK</button>
+        </div>
+      </main>
     </div>
-
-    <div class="gallery">
-      <img src="./foto1.jpg">
-      <img src="./foto2.jpg">
-      <img src="./foto3.jpg">
-      <img src="./foto4.jpg">
-    </div>
   </div>
-</div>
 
-</div>
+  <script>
+    // Música do YouTube (a que já funcionou pra você)
+    const YT_ID = "wMne8UDPN7A";
 
-<script>
-function go(n){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('s'+n).classList.add('active');
-}
+    const screens = ["s1","s2","s3","s4","s5","s6"].reduce((a,id)=>(a[id]=document.getElementById(id),a),{});
+    const st = document.getElementById("st");
+    const state = document.getElementById("state");
+    const sub = document.getElementById("sub");
 
-function validar(){
-  const nome=document.getElementById('nome').value;
-  if(!nome){ alert("Digite seu nome 😊"); return; }
+    const p1 = document.getElementById("p1");
+    const p2 = document.getElementById("p2");
 
-  go(3);
-  const log=document.getElementById('log');
-  const bar=document.getElementById('bar');
-  log.textContent="";
-  let lines=[
-    "Iniciando scanner...",
-    "Nome detectado: "+nome,
-    "Procurando defeitos...",
-    "Nenhum encontrado.",
-    "Beleza confirmada: ∞",
-    "Compatibilidade aumentando..."
-  ];
-  let i=0,pct=100;
-  let t=setInterval(()=>{
-    log.textContent+=lines[i]+"\n";
-    bar.style.width=(i+1)*16+"%";
-    i++;
-    if(i>=lines.length){
-      clearInterval(t);
-      let p=setInterval(()=>{
-        pct+=50;
-        document.getElementById('pct').textContent=pct+"%";
-        if(pct>=1000) clearInterval(p);
-      },60);
+    const nome = document.getElementById("nome");
+    const apelido = document.getElementById("apelido");
+    const beleza = document.getElementById("beleza");
+
+    const q1 = document.getElementById("q1");
+    const q2 = document.getElementById("q2");
+    const q3 = document.getElementById("q3");
+
+    const term = document.getElementById("term");
+    const toReport = document.getElementById("toReport");
+
+    const pct = document.getElementById("pct");
+    const impact = document.getElementById("impact");
+
+    const finalTitle = document.getElementById("finalTitle");
+    const ytWrap = document.getElementById("ytWrap");
+    const yt = document.getElementById("yt");
+
+    // modal
+    const modal = document.getElementById("modal");
+    const pop = document.getElementById("pop");
+    const mTitle = document.getElementById("mTitle");
+    const mCode = document.getElementById("mCode");
+    const mMsg = document.getElementById("mMsg");
+    const mOk = document.getElementById("mOk");
+
+    const session = { nome:"", apelido:"Loira", beleza:"∞", q1:"", q2:"", q3:"" };
+
+    function setState(v){
+      st.textContent = v;
+      state.textContent = `state=${v}`;
     }
-  },400);
-}
+    function go(id){
+      Object.values(screens).forEach(s=>s.classList.remove("active"));
+      screens[id].classList.add("active");
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
 
-function tocar(){
-  document.getElementById('yt').style.display="block";
-}
-</script>
+    function showModal(title, code, msg){
+      mTitle.textContent = title;
+      mCode.textContent = code;
+      mMsg.innerHTML = msg;
+      modal.classList.add("show");
+      pop.classList.remove("shake");
+      void pop.offsetWidth;
+      pop.classList.add("shake");
+    }
+    function hideModal(){ modal.classList.remove("show"); }
+    mOk.addEventListener("click", hideModal);
+    modal.addEventListener("click", (e)=>{ if(e.target === modal) hideModal(); });
 
+    document.querySelectorAll("[data-back]").forEach(b=>{
+      b.addEventListener("click", ()=>go(b.getAttribute("data-back")));
+    });
+
+    function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+
+    // easter egg
+    document.getElementById("secret").addEventListener("click", ()=>{
+      showModal("Botão Proibido", "SYS-007",
+        "✅ <b>Modo fofura</b> ativado.<br><br>Você acabou de ganhar um elogio secreto: <b>você tem um jeito de melhorar o meu dia sem esforço</b>.");
+    });
+
+    // start
+    setState("IDLE");
+    p1.style.width = "8%";
+    document.getElementById("start").addEventListener("click", async ()=>{
+      setState("BOOTING");
+      p1.style.width = "35%"; await sleep(180);
+      p1.style.width = "62%"; await sleep(180);
+      p1.style.width = "100%"; await sleep(160);
+      setState("FORM");
+      go("s2");
+    });
+
+    // to quiz
+    document.getElementById("toQuiz").addEventListener("click", ()=>{
+      const n = (nome.value||"").trim();
+      if(!n){
+        showModal("Erro de Entrada", "SYS-101", "Campo <b>Nome</b> é obrigatório 😌");
+        return;
+      }
+      session.nome = n;
+      session.apelido = (apelido.value||"").trim() || "Loira";
+
+      // beleza: pegadinha leve
+      const b = (beleza.value||"").trim().toLowerCase();
+      const ok = (b === "∞" || b === "infinito" || b === "infinita");
+      if(!ok){
+        showModal("ERRO CRÍTICO", "SYS-666",
+          "Valor inválido.<br><br>🔧 Correção automática aplicada: <b>∞</b>.<br>Motivo: o sistema não aceita beleza baixa.");
+        beleza.value = "∞";
+        return;
+      }
+      session.beleza = "∞";
+
+      sub.textContent = `alvo: ${session.apelido} • protocolo: sorriso`;
+      finalTitle.textContent = `${session.apelido}…`;
+
+      setState("QUIZ");
+      go("s3");
+    });
+
+    // to scan
+    document.getElementById("toScan").addEventListener("click", ()=>{
+      session.q1 = q1.value;
+      session.q2 = q2.value;
+      session.q3 = q3.value;
+
+      setState("SCANNING");
+      go("s4");
+      startScan();
+    });
+
+    // scan dynamic
+    async function startScan(){
+      term.textContent = "";
+      toReport.disabled = true;
+      p2.style.width = "0%";
+
+      const moodTxt = {
+        leve: "leve",
+        séria: "séria",
+        cansada: "cansada",
+        com_saudade: "com saudade"
+      }[session.q1] || "leve";
+
+      const powerTxt = {
+        teletransporte: "teletransporte",
+        parar_tempo: "parar o tempo",
+        ler_mentes: "ler mentes",
+        cura: "cura"
+      }[session.q2] || "teletransporte";
+
+      const styleTxt = {
+        simples: "simples (mas de verdade)",
+        intensa: "intensa (mas com calma)"
+      }[session.q3] || "simples";
+
+      const lines = [
+        {t:`[SYS] Iniciando scanner…`, c:""},
+        {t:`[DAT] Nome informado: ${session.nome}`, c:"ok"},
+        {t:`[DAT] Apelido: ${session.apelido}`, c:"ok"},
+        {t:`[DAT] Beleza: ${session.beleza} (confirmado pelo sistema).`, c:"ok"},
+        {t:`[CHK] Humor do dia: ${moodTxt}`, c:"warn"},
+        {t:`[CHK] Superpoder escolhido: ${powerTxt}`, c:"warn"},
+        {t:`[CHK] Estilo: ${styleTxt}`, c:"warn"},
+        {t:`[CHK] Procurando defeitos…`, c:""},
+        {t:`[ERR] Nenhum defeito encontrado (0 resultados).`, c:"err"},
+        {t:`[OK ] Detectado: presença que acalma + sorriso que bagunça tudo.`, c:"ok"},
+        {t:`[OK ] Compatibilidade subindo…`, c:"ok"},
+      ];
+
+      for(let i=0;i<lines.length;i++){
+        const L = lines[i];
+        appendLine(L.t, L.c);
+        p2.style.width = `${Math.min(100, (i+1)* (100/lines.length))}%`;
+        await sleep(330);
+      }
+
+      // set impact line with quiz flavor
+      impact.textContent = (session.q2 === "cura")
+        ? "você tem um jeito de cuidar do mundo… e sem perceber, mexe com o meu."
+        : "tem coisas em você que puxam a atenção e seguram o coração.";
+
+      await sleep(200);
+      toReport.disabled = false;
+      setState("REPORT");
+    }
+
+    function appendLine(text, cls=""){
+      const div = document.createElement("div");
+      div.className = `tag ${cls}`;
+      div.textContent = text;
+      term.appendChild(div);
+    }
+
+    // to report
+    toReport.addEventListener("click", ()=>{
+      go("s5");
+      animatePct();
+    });
+
+    // 100% -> 1000%
+    let pctTimer = null;
+    function animatePct(){
+      if(pctTimer) clearInterval(pctTimer);
+      let v = 100;
+      pct.textContent = `${v}%`;
+      pctTimer = setInterval(()=>{
+        const step = v < 500 ? 22 : v < 850 ? 16 : 12;
+        v += step;
+        if(v >= 1000){
+          v = 1000;
+          clearInterval(pctTimer);
+          pctTimer = null;
+        }
+        pct.textContent = `${v}%`;
+      }, 40);
+    }
+
+    // to final
+    document.getElementById("toFinal").addEventListener("click", ()=>{
+      setState("FINAL");
+      go("s6");
+    });
+
+    // play music (reveal youtube)
+    document.getElementById("play").addEventListener("click", ()=>{
+      ytWrap.style.display = "block";
+      yt.src = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&playsinline=1&rel=0`;
+    });
+
+    // reveal surprise
+    document.getElementById("reveal").addEventListener("click", ()=>{
+      showModal("Surpresa", "SYS-LOVE",
+        "Se você leu até aqui… então deixa eu registrar oficialmente:<br><br>" +
+        "<b>eu gosto de ter você por perto.</b><br>" +
+        "E eu quero que isso continue — do jeito leve, certo e verdadeiro.");
+    });
+
+    document.getElementById("restart").addEventListener("click", ()=>{
+      yt.src = "";
+      ytWrap.style.display = "none";
+      setState("IDLE");
+      p1.style.width = "8%";
+      p2.style.width = "0%";
+      pct.textContent = "100%";
+      go("s1");
+    });
+
+    document.getElementById("shareTip").addEventListener("click", ()=>{
+      showModal("Como enviar", "TIP-001",
+        "Manda só o link e essa frase:<br><br>" +
+        "“Fiz uma coisinha diferente pra você… abre com calma 💛”<br><br>" +
+        "Sem explicar. Sem spoiler. Deixa ela descobrir.");
+    });
+  </script>
 </body>
 </html>
-
