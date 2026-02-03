@@ -1,116 +1,84 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scanner de Compatibilidade™</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Scanner de Compatibilidade™</title>
 
-<style>
-body{
-  margin:0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(160deg,#0a0a14,#111827);
-  color:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-}
-.app{
-  width:100%;
-  max-width:420px;
-  background:#0f172a;
-  border-radius:22px;
-  padding:18px;
-  box-shadow:0 20px 60px rgba(0,0,0,.6);
-}
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
-}
-header h1{
-  font-size:14px;
-  margin:0;
-}
-.status{
-  font-size:11px;
-  padding:6px 10px;
-  border-radius:20px;
-  background:#1e293b;
-}
-.screen{display:none;}
-.screen.active{display:block;}
-
-.card{
-  background:#020617;
-  border-radius:18px;
-  padding:16px;
-  margin-top:12px;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border:none;
-  border-radius:14px;
-  background:#4f46e5;
-  color:#fff;
-  font-size:15px;
-  cursor:pointer;
-}
-button.secondary{
-  background:#1e293b;
-}
-
-input{
-  width:100%;
-  padding:12px;
-  margin-top:8px;
-  border-radius:12px;
-  border:none;
-  background:#020617;
-  color:#fff;
-}
-
-.progress{
-  width:100%;
-  height:10px;
-  background:#1e293b;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:10px;
-}
-.progress div{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#22c55e,#4f46e5);
-  transition:.4s;
-}
-
-.log{
-  font-family: monospace;
-  font-size:12px;
-  background:#020617;
-  padding:12px;
-  border-radius:14px;
-  margin-top:10px;
-  min-height:120px;
-}
-
-.gallery{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:12px;
-}
-.gallery img{
-  width:100%;
-  border-radius:14px;
-}
-</style>
+  <style>
+    :root{
+      --bg1:#070712; --bg2:#0b1222; --card:#0a0f1e;
+      --txt:#e8eefc; --muted:#a9b5d3; --accent:#5b5cff; --good:#22c55e;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; display:flex; justify-content:center; align-items:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(160deg, var(--bg1), var(--bg2));
+      color:var(--txt);
+      padding:18px;
+    }
+    .app{
+      width:min(460px, 100%);
+      border-radius:26px;
+      padding:16px;
+      background: rgba(10,15,30,.9);
+      box-shadow: 0 20px 70px rgba(0,0,0,.65);
+    }
+    header{
+      display:flex; justify-content:space-between; margin-bottom:10px;
+    }
+    .status{
+      font-size:11px; padding:6px 10px; border-radius:999px;
+      background: rgba(255,255,255,.1);
+      color:var(--muted);
+    }
+    .card{
+      background:#020617;
+      border-radius:20px;
+      padding:16px;
+    }
+    .screen{display:none}
+    .screen.active{display:block}
+    h2,h3{margin:0 0 8px}
+    p{margin:8px 0; color:var(--muted); line-height:1.45}
+    button{
+      width:100%; border:none; border-radius:16px; padding:12px;
+      background:var(--accent); color:white; font-weight:700; cursor:pointer;
+      margin-top:10px;
+    }
+    input{
+      width:100%; padding:12px; margin-top:8px;
+      border-radius:14px; border:none;
+      background:#020617; color:white;
+    }
+    .log{
+      font-family: monospace; font-size:12px;
+      background:#020617; padding:12px;
+      border-radius:14px; min-height:120px;
+      white-space:pre-wrap;
+    }
+    .progress{
+      height:10px; background:#1e293b; border-radius:20px;
+      overflow:hidden; margin-top:10px;
+    }
+    .bar{
+      height:100%; width:0%;
+      background:linear-gradient(90deg,var(--good),var(--accent));
+      transition:.4s;
+    }
+    .gallery{
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:10px; margin-top:14px;
+    }
+    .gallery img{
+      width:100%; border-radius:14px;
+    }
+    .yt{
+      margin-top:12px; border-radius:16px; overflow:hidden;
+    }
+    iframe{width:100%; height:240px; border:0}
+  </style>
 </head>
 
 <body>
@@ -118,7 +86,7 @@ input{
 <div class="app">
 
 <header>
-  <h1>Scanner de Compatibilidade™</h1>
+  <div>Scanner de Compatibilidade™</div>
   <div class="status" id="status">IDLE</div>
 </header>
 
@@ -126,7 +94,7 @@ input{
 <div class="screen active" id="s1">
   <div class="card">
     <h2>Oi, Loira 😌</h2>
-    <p>Isso aqui é só um teste rápido… mas tem coisa que não dá pra medir sem sentir.</p>
+    <p>Isso aqui é só um teste… mas o resultado eu já imagino.</p>
     <button onclick="go(2)">COMEÇAR</button>
   </div>
 </div>
@@ -134,9 +102,9 @@ input{
 <!-- TELA 2 -->
 <div class="screen" id="s2">
   <div class="card">
-    <h3>Dados mínimos</h3>
+    <h3>Dados básicos</h3>
     <input id="nome" placeholder="Seu nome">
-    <input id="apelido" placeholder="Apelido">
+    <input id="apelido" placeholder="Apelido (se quiser)">
     <input id="beleza" placeholder="Nível de beleza (∞)">
     <button onclick="validar()">VALIDAR</button>
   </div>
@@ -147,7 +115,7 @@ input{
   <div class="card">
     <h3>Escaneando…</h3>
     <div class="log" id="log"></div>
-    <div class="progress"><div id="bar"></div></div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
     <button onclick="go(4)">VER RESULTADO</button>
   </div>
 </div>
@@ -155,9 +123,9 @@ input{
 <!-- TELA 4 -->
 <div class="screen" id="s4">
   <div class="card">
-    <h3>Relatório Oficial</h3>
+    <h3>Relatório</h3>
     <p><b>Compatibilidade:</b> <span id="pct">100%</span></p>
-    <p><b>Risco:</b> perigo real de eu me apegar… e querer cuidar de você cada dia mais.</p>
+    <p><b>Risco:</b> grande chance de eu querer cuidar de você todos os dias.</p>
     <p><b>Resultado:</b> Acesso permitido para a loira mais linda do mundo</p>
     <button onclick="go(5)">DESBLOQUEAR 💛</button>
   </div>
@@ -166,16 +134,24 @@ input{
 <!-- TELA FINAL -->
 <div class="screen" id="s5">
   <div class="card">
-    <h3>Loira...</h3>
+    <h3>Loira…</h3>
     <p>
-      Eu fiz isso só pra te arrancar um sorriso… mas também pra te falar uma coisa bem simples:
-      <b>Eu te amo!</b><br><br>
-      Você é muito importante pra mim, muito mesmo.  
-      Pode contar comigo pra sempre.  
+      Eu fiz isso só pra te arrancar um sorriso…  
+      mas também pra te falar uma coisa bem simples:  
+      <b>eu te amo.</b><br><br>
+      Você é muito importante pra mim.  
       Não quero perder você e não quero que saia nunca da minha vida.
     </p>
 
-    <button onclick="playMusic()">▶ TOCAR MÚSICA</button>
+    <button onclick="tocar()">▶ TOCAR MÚSICA</button>
+
+    <div class="yt" id="yt" style="display:none">
+      <iframe
+        src="https://www.youtube.com/embed/wMne8UDPN7A?autoplay=1&playsinline=1&rel=0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+      </iframe>
+    </div>
 
     <div class="gallery">
       <img src="./foto1.jpg">
@@ -183,74 +159,54 @@ input{
       <img src="./foto3.jpg">
       <img src="./foto4.jpg">
     </div>
-
-    <audio id="music" controls playsinline preload="auto" style="width:100%; margin-top:10px;">
-  <source src="./dou_a_vida_por_um_beijo.mp3" type="audio/mpeg">
-</audio>
   </div>
 </div>
 
 </div>
 
 <script>
-let nome="",apelido="";
 function go(n){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById("s"+n).classList.add("active");
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
 }
 
 function validar(){
-  nome=document.getElementById("nome").value;
-  apelido=document.getElementById("apelido").value||"Loira";
-  let beleza=document.getElementById("beleza").value;
-  if(!nome) return alert("Digite seu nome");
-  if(beleza!=="∞") beleza="∞";
+  const nome=document.getElementById('nome').value;
+  if(!nome){ alert("Digite seu nome 😊"); return; }
 
   go(3);
-  scan();
-}
-
-function scan(){
-  let log=document.getElementById("log");
-  let bar=document.getElementById("bar");
-  log.innerHTML="";
+  const log=document.getElementById('log');
+  const bar=document.getElementById('bar');
+  log.textContent="";
   let lines=[
     "Iniciando scanner...",
     "Nome detectado: "+nome,
-    "Apelido: "+apelido,
     "Procurando defeitos...",
     "Nenhum encontrado.",
     "Beleza confirmada: ∞",
-    "Compatibilidade subindo..."
+    "Compatibilidade aumentando..."
   ];
-  let i=0;
-  let pct=100;
-  let int=setInterval(()=>{
-    log.innerHTML+=lines[i]+"<br>";
-    bar.style.width=(i+1)*14+"%";
+  let i=0,pct=100;
+  let t=setInterval(()=>{
+    log.textContent+=lines[i]+"\n";
+    bar.style.width=(i+1)*16+"%";
     i++;
-    if(i===lines.length){
-      clearInterval(int);
-      let pInt=setInterval(()=>{
+    if(i>=lines.length){
+      clearInterval(t);
+      let p=setInterval(()=>{
         pct+=50;
-        document.getElementById("pct").innerText=pct+"%";
-        if(pct>=1000) clearInterval(pInt);
+        document.getElementById('pct').textContent=pct+"%";
+        if(pct>=1000) clearInterval(p);
       },60);
     }
   },400);
 }
 
-function playMusic(){
-  const audio = document.getElementById("music");
-  audio.volume = 1.0;
-  audio.currentTime = 0;
-  audio.play().catch(() => {
-    alert("Toque novamente no botão para iniciar a música 🎵");
-  });
+function tocar(){
+  document.getElementById('yt').style.display="block";
 }
 </script>
 
 </body>
 </html>
-
 
