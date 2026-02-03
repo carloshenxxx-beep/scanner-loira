@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scanner de Compatibilidade™</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(160deg,#0a0a14,#111827);
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+.app{
+  width:100%;
+  max-width:420px;
+  background:#0f172a;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+header h1{
+  font-size:14px;
+  margin:0;
+}
+.status{
+  font-size:11px;
+  padding:6px 10px;
+  border-radius:20px;
+  background:#1e293b;
+}
+.screen{display:none;}
+.screen.active{display:block;}
+
+.card{
+  background:#020617;
+  border-radius:18px;
+  padding:16px;
+  margin-top:12px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:14px;
+  background:#4f46e5;
+  color:#fff;
+  font-size:15px;
+  cursor:pointer;
+}
+button.secondary{
+  background:#1e293b;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin-top:8px;
+  border-radius:12px;
+  border:none;
+  background:#020617;
+  color:#fff;
+}
+
+.progress{
+  width:100%;
+  height:10px;
+  background:#1e293b;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:10px;
+}
+.progress div{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#22c55e,#4f46e5);
+  transition:.4s;
+}
+
+.log{
+  font-family: monospace;
+  font-size:12px;
+  background:#020617;
+  padding:12px;
+  border-radius:14px;
+  margin-top:10px;
+  min-height:120px;
+}
+
+.gallery{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.gallery img{
+  width:100%;
+  border-radius:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+  <h1>Scanner de Compatibilidade™</h1>
+  <div class="status" id="status">IDLE</div>
+</header>
+
+<!-- TELA 1 -->
+<div class="screen active" id="s1">
+  <div class="card">
+    <h2>Oi, Loira 😌</h2>
+    <p>Isso aqui é só um teste rápido… mas tem coisa que não dá pra medir sem sentir.</p>
+    <button onclick="go(2)">COMEÇAR</button>
+  </div>
+</div>
+
+<!-- TELA 2 -->
+<div class="screen" id="s2">
+  <div class="card">
+    <h3>Dados mínimos</h3>
+    <input id="nome" placeholder="Seu nome">
+    <input id="apelido" placeholder="Apelido">
+    <input id="beleza" placeholder="Nível de beleza (∞)">
+    <button onclick="validar()">VALIDAR</button>
+  </div>
+</div>
+
+<!-- TELA 3 -->
+<div class="screen" id="s3">
+  <div class="card">
+    <h3>Escaneando…</h3>
+    <div class="log" id="log"></div>
+    <div class="progress"><div id="bar"></div></div>
+    <button onclick="go(4)">VER RESULTADO</button>
+  </div>
+</div>
+
+<!-- TELA 4 -->
+<div class="screen" id="s4">
+  <div class="card">
+    <h3>Relatório Oficial</h3>
+    <p><b>Compatibilidade:</b> <span id="pct">100%</span></p>
+    <p><b>Risco:</b> perigo real de eu me apegar… e querer cuidar de você cada dia mais.</p>
+    <p><b>Resultado:</b> Acesso permitido para a loira mais linda do mundo</p>
+    <button onclick="go(5)">DESBLOQUEAR 💛</button>
+  </div>
+</div>
+
+<!-- TELA FINAL -->
+<div class="screen" id="s5">
+  <div class="card">
+    <h3>Loira...</h3>
+    <p>
+      Eu fiz isso só pra te arrancar um sorriso… mas também pra te falar uma coisa bem simples:
+      <b>Eu te amo!</b><br><br>
+      Você é muito importante pra mim, muito mesmo.  
+      Pode contar comigo pra sempre.  
+      Não quero perder você e não quero que saia nunca da minha vida.
+    </p>
+
+    <button onclick="playMusic()">▶ TOCAR MÚSICA</button>
+
+    <div class="gallery">
+      <img src="./foto1.jpg">
+      <img src="./foto2.jpg">
+      <img src="./foto3.jpg">
+      <img src="./foto4.jpg">
+    </div>
+
+    <audio id="music">
+      <source src="./dou_a_vida_por_um_beijo.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+</div>
+
+</div>
+
+<script>
+let nome="",apelido="";
+function go(n){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById("s"+n).classList.add("active");
+}
+
+function validar(){
+  nome=document.getElementById("nome").value;
+  apelido=document.getElementById("apelido").value||"Loira";
+  let beleza=document.getElementById("beleza").value;
+  if(!nome) return alert("Digite seu nome");
+  if(beleza!=="∞") beleza="∞";
+
+  go(3);
+  scan();
+}
+
+function scan(){
+  let log=document.getElementById("log");
+  let bar=document.getElementById("bar");
+  log.innerHTML="";
+  let lines=[
+    "Iniciando scanner...",
+    "Nome detectado: "+nome,
+    "Apelido: "+apelido,
+    "Procurando defeitos...",
+    "Nenhum encontrado.",
+    "Beleza confirmada: ∞",
+    "Compatibilidade subindo..."
+  ];
+  let i=0;
+  let pct=100;
+  let int=setInterval(()=>{
+    log.innerHTML+=lines[i]+"<br>";
+    bar.style.width=(i+1)*14+"%";
+    i++;
+    if(i===lines.length){
+      clearInterval(int);
+      let pInt=setInterval(()=>{
+        pct+=50;
+        document.getElementById("pct").innerText=pct+"%";
+        if(pct>=1000) clearInterval(pInt);
+      },60);
+    }
+  },400);
+}
+
+function playMusic(){
+  document.getElementById("music").play();
+}
+</script>
+
+</body>
+</html>
