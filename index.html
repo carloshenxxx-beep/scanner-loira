@@ -7,18 +7,13 @@
 
 <style>
   :root{
-    --bg0:#05050b;
-    --bg1:#070915;
-    --bg2:#0b1224;
+    --bg0:#05050b; --bg2:#0b1224;
     --glass:rgba(255,255,255,.08);
-    --glass2:rgba(255,255,255,.12);
     --line:rgba(255,255,255,.14);
     --txt:rgba(255,255,255,.92);
     --muted:rgba(255,255,255,.62);
-    --accent:#6d5cff;
-    --accent2:#22c55e;
-    --warn:#ffcc00;
-    --danger:#ff3b30;
+    --accent:#6d5cff; --good:#22c55e;
+    --warn:#ffcc00; --danger:#ff3b30;
     --shadow:0 30px 100px rgba(0,0,0,.72);
     --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -42,6 +37,7 @@
     overflow-x:hidden;
   }
 
+  /* partículas + glow */
   .fx{
     position:fixed; inset:-40px;
     pointer-events:none;
@@ -80,22 +76,13 @@
   }
   .brand{min-width:0}
   .brand b{
-    display:block;
-    font-size:13px;
-    letter-spacing:.2px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+    display:block; font-size:13px; letter-spacing:.2px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
   .brand span{
-    display:block;
-    margin-top:3px;
-    font-family:var(--mono);
-    font-size:11px;
-    color:var(--muted);
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+    display:block; margin-top:3px;
+    font-family:var(--mono); font-size:11px; color:var(--muted);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
   .pill{
     font-family:var(--mono);
@@ -134,7 +121,7 @@
   h1,h2{margin:0 0 10px}
   h1{font-size:18px; font-weight:900}
   h2{font-size:15px; font-weight:900}
-  p{margin:8px 0; color:rgba(255,255,255,.86); line-height:1.5}
+  p{margin:8px 0; color:rgba(255,255,255,.86); line-height:1.55}
   .muted{color:var(--muted)}
   .small{font-size:12px; color:var(--muted)}
 
@@ -199,6 +186,7 @@
     transition: width .35s ease;
   }
 
+  /* terminal scan */
   .terminal{
     margin-top:12px;
     border-radius:18px;
@@ -237,7 +225,7 @@
   .glow{
     position:absolute; inset:-40px;
     background:
-      radial-gradient(400px 180px at 40% 20%, rgba(109,92,255,.18), transparent 70%),
+      radial-gradient(420px 180px at 40% 20%, rgba(109,92,255,.18), transparent 70%),
       radial-gradient(380px 180px at 60% 80%, rgba(34,197,94,.12), transparent 70%);
     opacity:.9;
     pointer-events:none;
@@ -260,7 +248,7 @@
     border:2px solid rgba(0,0,0,.25);
   }
 
-  /* checkboxes */
+  /* checkboxes premium */
   .checks{margin-top:10px; display:flex; flex-direction:column; gap:10px}
   .check{
     display:flex; gap:12px; align-items:flex-start;
@@ -295,36 +283,31 @@
     filter: blur(2px);
     transition: opacity .7s ease, transform .7s ease, filter .7s ease;
   }
-  .reveal-line.show{
-    opacity:1;
-    transform:none;
-    filter: blur(0);
-  }
+  .reveal-line.show{ opacity:1; transform:none; filter: blur(0); }
 
+  /* polaroid gallery */
   .gallery{
     display:grid;
     grid-template-columns: repeat(2, 1fr);
     gap:10px;
     margin-top:12px;
   }
-  .ph{
+  .polaroid{
     border-radius:18px;
     border:1px solid rgba(255,255,255,.12);
     overflow:hidden;
     background: rgba(255,255,255,.06);
-    aspect-ratio:1/1;
-    position:relative;
+    transform: rotate(var(--rot, -1deg));
+    box-shadow: 0 18px 50px rgba(0,0,0,.35);
   }
-  .ph img{ width:100%; height:100%; object-fit:cover; display:block }
-  .ph span{
-    position:absolute; left:10px; right:10px; bottom:10px;
-    padding:8px 10px;
-    border-radius:999px;
-    background: rgba(0,0,0,.38);
-    border:1px solid rgba(255,255,255,.12);
-    backdrop-filter: blur(6px);
+  .polaroid img{ width:100%; height:240px; object-fit:cover; display:block }
+  .cap{
+    padding:10px 12px;
+    border-top:1px solid rgba(255,255,255,.10);
+    font-family:var(--mono);
     font-size:11px;
-    color: rgba(255,255,255,.90);
+    color: rgba(255,255,255,.78);
+    background: rgba(0,0,0,.25);
   }
 
   .ytWrap{
@@ -348,6 +331,40 @@
     user-select:none;
   }
 
+  /* toast */
+  .toasts{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:14px;
+    width:min(480px, calc(100% - 24px));
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    z-index:999;
+    pointer-events:none;
+  }
+  .toast{
+    pointer-events:none;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(10,10,14,.86);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 18px 50px rgba(0,0,0,.55);
+    padding:12px 14px;
+    animation: toastIn .18s ease both;
+  }
+  @keyframes toastIn{
+    from{opacity:0; transform:translateY(10px); filter: blur(2px)}
+    to{opacity:1; transform:none; filter: blur(0)}
+  }
+  .toast b{display:block;font-size:12px}
+  .toast span{display:block;margin-top:3px;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.72)}
+  .t-ok{border-color:rgba(34,197,94,.35)}
+  .t-warn{border-color:rgba(255,204,0,.35)}
+  .t-err{border-color:rgba(255,59,48,.35)}
+
+  /* modal */
   .modal{
     position:fixed; inset:0;
     display:none;
@@ -397,6 +414,7 @@
 
 <body>
 <div class="fx"></div>
+<div class="toasts" id="toasts"></div>
 
 <div class="app">
   <header>
@@ -437,26 +455,15 @@
         <div class="checks">
           <label class="check">
             <input type="radio" name="secret" value="rir" checked>
-            <div>
-              <b>Quero rir um pouco</b>
-              <small>resposta rápida • zero julgamento</small>
-            </div>
+            <div><b>Quero rir um pouco</b><small>resposta rápida • zero julgamento</small></div>
           </label>
-
           <label class="check">
             <input type="radio" name="secret" value="verdade">
-            <div>
-              <b>Quero uma verdade</b>
-              <small>sem drama • só uma coisa bonita</small>
-            </div>
+            <div><b>Quero uma verdade</b><small>sem drama • só uma coisa bonita</small></div>
           </label>
-
           <label class="check">
             <input type="radio" name="secret" value="surpresa">
-            <div>
-              <b>Quero uma surpresa</b>
-              <small>nível: “uai…”</small>
-            </div>
+            <div><b>Quero uma surpresa</b><small>nível: “uai…”</small></div>
           </label>
         </div>
 
@@ -534,7 +541,7 @@
         <h2>Escaneando…</h2>
         <p class="muted">Fica tranquila. É só pra eu ter “provas” do que eu já sei.</p>
 
-        <div class="terminal" id="terminal">
+        <div class="terminal">
           <div class="scanline"></div>
           <div id="term"></div>
         </div>
@@ -547,7 +554,7 @@
       </div>
     </section>
 
-    <!-- S6 compat (sem símbolo ∞) -->
+    <!-- S6 compat -->
     <section class="screen" id="s6">
       <div class="card">
         <div class="glow"></div>
@@ -557,13 +564,33 @@
         <p class="muted" id="compatHint">subindo…</p>
 
         <div class="btns">
-          <button class="good" id="btnToText" disabled>AVANÇAR</button>
+          <button class="good" id="btnToDistance" disabled>AVANÇAR</button>
           <button class="ghost" data-back="s5">VOLTAR</button>
         </div>
       </div>
     </section>
 
-    <!-- ✅ NOVA TELA (texto longo) -->
+    <!-- ✅ S6A distância (novo) -->
+    <section class="screen" id="s6a">
+      <div class="card">
+        <div class="glow"></div>
+        <div class="kicker">RADAR → distancia_detectada()</div>
+        <h2>Mapa da distância</h2>
+        <p class="muted">Pode estar longe no mapa… mas perto de um jeito que o sistema não mede.</p>
+
+        <div class="terminal" style="min-height:120px">
+          <div class="scanline"></div>
+          <div id="distTerm"></div>
+        </div>
+
+        <div class="btns">
+          <button class="primary" id="btnToTextLong">CONTINUAR</button>
+          <button class="ghost" data-back="s6">VOLTAR</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- S6B texto longo -->
     <section class="screen" id="s6b">
       <div class="card">
         <div class="kicker">NOTE → o_que_eu_gosto_em_você()</div>
@@ -571,52 +598,18 @@
         <p class="muted">Essa parte é calma. Lê no seu tempo.</p>
 
         <div class="scrollBox">
-          <p>
-            Gosto quando a gente sai e, em algum momento, eu me pego te olhando e sorrindo sozinho, sem nem perceber.
-            Não é pelo lugar, nem pelo que está em volta. É porque ali, naquele instante, eu sei que estou no melhor lugar do mundo.
-            Quando é eu e você, tudo fica mais simples, mais leve, mais certo.
-          </p>
-
-          <p>
-            Gosto quando a gente sai só nós dois e conversa sobre tudo. Sem pressa, sem roteiro, sem fingir nada.
-            A conversa vai indo, muda de assunto, volta, se perde e se encontra de novo. E eu gosto disso.
-            Gosto de sentir que o tempo desacelera quando a gente está junto.
-          </p>
-
-          <p>
-            Gosto muito quando você começa a falar da sua vida. Da sua faculdade, das coisas que já viveu, das histórias que carrega.
-            Tem um jeito seu de contar que prende minha atenção inteira. Eu ficaria o dia todo te ouvindo, conversando, só ali,
-            porque ouvir você é fácil, é bom. Gosto de ouvir a sua voz. Ela tem um jeito que acalma, que aproxima,
-            que faz o momento parecer seguro.
-          </p>
-
-          <p>
-            Gosto muito do seu sorriso. Do jeito que só você tem. Um sorriso que chega antes das palavras,
-            que muda o clima, que deixa tudo melhor sem esforço. Gosto do seu jeito também — desse jeito que não se explica, mas se sente.
-            Da sua presença, que é diferente de qualquer outra, que se impõe sem precisar de nada além de existir.
-          </p>
-
-          <p>
-            Gosto de estar perto de você. Do seu abraço, do toque que acontece naturalmente, sem ser forçado.
-            Da proximidade que vai surgindo no meio da conversa, como se sempre tivesse sido assim.
-            Gosto da calma que você passa, da atenção, do cuidado nos detalhes pequenos, que são os que mais ficam.
-          </p>
-
-          <p>
-            Gosto de sentir que, quando estamos juntos, o momento é nosso. Sem pressa pra ir embora, sem distração,
-            sem metade da atenção em outro lugar. Gosto de poder ser eu ali, do jeito que sou, sem precisar provar nada.
-          </p>
-
-          <p>
-            E talvez seja isso que eu mais gosto: a sensação de que estar com você não exige esforço. É só estar.
-            Conversar, ouvir, sorrir, compartilhar histórias e silêncios. Como se o mundo diminuísse só pra caber a gente ali,
-            simples, verdadeiro e do jeito certo.
-          </p>
+          <p>Gosto quando a gente sai e, em algum momento, eu me pego te olhando e sorrindo sozinho, sem nem perceber. Não é pelo lugar, nem pelo que está em volta. É porque ali, naquele instante, eu sei que estou no melhor lugar do mundo. Quando é eu e você, tudo fica mais simples, mais leve, mais certo.</p>
+          <p>Gosto quando a gente sai só nós dois e conversa sobre tudo. Sem pressa, sem roteiro, sem fingir nada. A conversa vai indo, muda de assunto, volta, se perde e se encontra de novo. E eu gosto disso. Gosto de sentir que o tempo desacelera quando a gente está junto.</p>
+          <p>Gosto muito quando você começa a falar da sua vida. Da sua faculdade, das coisas que já viveu, das histórias que carrega. Tem um jeito seu de contar que prende minha atenção inteira. Eu ficaria o dia todo te ouvindo, conversando, só ali, porque ouvir você é fácil, é bom. Gosto de ouvir a sua voz. Ela tem um jeito que acalma, que aproxima, que faz o momento parecer seguro.</p>
+          <p>Gosto muito do seu sorriso. Do jeito que só você tem. Um sorriso que chega antes das palavras, que muda o clima, que deixa tudo melhor sem esforço. Gosto do seu jeito também — desse jeito que não se explica, mas se sente. Da sua presença, que é diferente de qualquer outra, que se impõe sem precisar de nada além de existir.</p>
+          <p>Gosto de estar perto de você. Do seu abraço, do toque que acontece naturalmente, sem ser forçado. Da proximidade que vai surgindo no meio da conversa, como se sempre tivesse sido assim. Gosto da calma que você passa, da atenção, do cuidado nos detalhes pequenos, que são os que mais ficam.</p>
+          <p>Gosto de sentir que, quando estamos juntos, o momento é nosso. Sem pressa pra ir embora, sem distração, sem metade da atenção em outro lugar. Gosto de poder ser eu ali, do jeito que sou, sem precisar provar nada.</p>
+          <p>E talvez seja isso que eu mais gosto: a sensação de que estar com você não exige esforço. É só estar. Conversar, ouvir, sorrir, compartilhar histórias e silêncios. Como se o mundo diminuísse só pra caber a gente ali, simples, verdadeiro e do jeito certo.</p>
         </div>
 
         <div class="btns">
           <button class="primary" id="btnToChoices2">CONTINUAR</button>
-          <button class="ghost" data-back="s6">VOLTAR</button>
+          <button class="ghost" data-back="s6a">VOLTAR</button>
         </div>
       </div>
     </section>
@@ -626,32 +619,12 @@
       <div class="card">
         <div class="kicker">CHOICE → personalizar_surpresa()</div>
         <h2>Escolhe uma(s) opção(ões)</h2>
-        <p class="muted">Marca o que você quiser. Cada escolha muda o que vem depois.</p>
+        <p class="muted">Marca o que você quiser. Cada escolha muda o que vem depois (de verdade).</p>
 
         <div class="checks">
-          <label class="check">
-            <input type="checkbox" id="c1">
-            <div>
-              <b>Uma verdade</b>
-              <small>sem pressão • sem exagero</small>
-            </div>
-          </label>
-
-          <label class="check">
-            <input type="checkbox" id="c2">
-            <div>
-              <b>Um momento</b>
-              <small>tipo “pausar o mundo”</small>
-            </div>
-          </label>
-
-          <label class="check">
-            <input type="checkbox" id="c3">
-            <div>
-              <b>Uma coisa que eu quase nunca digo</b>
-              <small>carinho disfarçado • risco: sorriso</small>
-            </div>
-          </label>
+          <label class="check"><input type="checkbox" id="c1"><div><b>Uma verdade</b><small>sem pressão • sem exagero</small></div></label>
+          <label class="check"><input type="checkbox" id="c2"><div><b>Um momento</b><small>tipo “pausar o mundo”</small></div></label>
+          <label class="check"><input type="checkbox" id="c3"><div><b>Uma coisa que eu quase nunca digo</b><small>carinho disfarçado • risco: sorriso</small></div></label>
         </div>
 
         <div class="btns">
@@ -711,10 +684,14 @@
         </div>
 
         <div class="gallery" id="gallery" style="display:none">
-          <div class="ph"><img src="./foto1.jpg" alt="Foto 1"><span>📸</span></div>
-          <div class="ph"><img src="./foto2.jpg" alt="Foto 2"><span>📸</span></div>
-          <div class="ph"><img src="./foto3.jpg" alt="Foto 3"><span>📸</span></div>
-          <div class="ph"><img src="./foto4.jpg" alt="Foto 4"><span>📸</span></div>
+          <div class="polaroid" style="--rot:-2deg"><img src="./foto1.jpg" alt="Foto 1"><div class="cap" id="cap1">“aquela risada”</div></div>
+          <div class="polaroid" style="--rot:1.5deg"><img src="./foto2.jpg" alt="Foto 2"><div class="cap" id="cap2">“esse dia…”</div></div>
+          <div class="polaroid" style="--rot:-1deg"><img src="./foto3.jpg" alt="Foto 3"><div class="cap" id="cap3">“do jeito certo”</div></div>
+          <div class="polaroid" style="--rot:2deg"><img src="./foto4.jpg" alt="Foto 4"><div class="cap" id="cap4">“perto, mesmo longe”</div></div>
+          <div class="polaroid" style="grid-column:1/-1; --rot:-.5deg">
+            <img src="./foto5.jpg" alt="Foto 5">
+            <div class="cap" id="cap5">“a foto especial”</div>
+          </div>
         </div>
 
         <div class="hidden-note" id="hiddenNote">nem tudo precisa ser dito de uma vez.</div>
@@ -748,11 +725,9 @@
 
 <script>
   const YT_ID = "wMne8UDPN7A";
-
   const $ = (id)=>document.getElementById(id);
-  const setState = (v)=>{ $("st").textContent=v; $("state").textContent=`state=${v}`; };
 
-  const screens = ["s1","s2","s3","s4","s5","s6","s6b","s7","s8","s9","s10"]
+  const screens = ["s1","s2","s3","s4","s5","s6","s6a","s6b","s7","s8","s9","s10"]
     .reduce((a,id)=>(a[id]=$(id),a),{});
 
   function go(id){
@@ -761,6 +736,20 @@
     window.scrollTo({top:0, behavior:"smooth"});
   }
 
+  const setState = (v)=>{ $("st").textContent=v; $("state").textContent=`state=${v}`; };
+
+  // toast
+  function toast(type, title, msg, ms=2200){
+    const wrap = $("toasts");
+    const el = document.createElement("div");
+    el.className = `toast ${type}`;
+    el.innerHTML = `<b>${title}</b><span>${msg}</span>`;
+    wrap.appendChild(el);
+    setTimeout(()=>{ el.style.opacity="0"; el.style.transform="translateY(8px)"; }, ms-240);
+    setTimeout(()=>{ el.remove(); }, ms);
+  }
+
+  // modal
   const modal = $("modal"), pop = $("pop"), mTitle=$("mTitle"), mCode=$("mCode"), mMsg=$("mMsg");
   function showModal(title, code, msg){
     mTitle.textContent = title;
@@ -783,27 +772,35 @@
     nome:"",
     apelido:"Loira",
     beleza:"infinito",
-    q1:"leve", q2:"teletransporte", q3:"simples",
     secret:"rir",
     choices:{c1:false,c2:false,c3:false}
   };
 
   function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
 
+  // vibração leve (quando suportado)
+  function buzz(pattern=[30]){
+    if(navigator.vibrate) navigator.vibrate(pattern);
+  }
+
   setState("IDLE");
   $("p1").style.width = "10%";
 
   $("btnStart").addEventListener("click", async ()=>{
     setState("BOOTING");
-    $("p1").style.width="45%"; await sleep(160);
-    $("p1").style.width="72%"; await sleep(160);
-    $("p1").style.width="100%"; await sleep(130);
+    $("p1").style.width="45%"; await sleep(140);
+    $("p1").style.width="72%"; await sleep(140);
+    $("p1").style.width="100%"; await sleep(120);
+    toast("t-ok","Sistema pronto","iniciando protocolo: sorriso");
+    buzz([20]);
     setState("FORM");
     go("s3");
   });
 
   $("btnForbidden").addEventListener("click", ()=>{
     setState("SECRET");
+    toast("t-warn","Acesso alternativo","curiosidade detectada");
+    buzz([15]);
     go("s2");
   });
 
@@ -812,17 +809,14 @@
     session.secret = v;
 
     if(v==="rir"){
-      showModal("Modo Riso", "SYS-201",
-        "✅ Resultado: <b>risco alto de sorriso involuntário</b>.<br><br>" +
-        "Obs: você tem um jeito que melhora o dia… sem esforço.");
+      toast("t-ok","Modo Riso","risco alto de sorriso involuntário");
+      showModal("Modo Riso", "SYS-201", "✅ Resultado: <b>risco alto de sorriso</b>.<br><br>Obs: você melhora o dia… sem esforço.");
     }else if(v==="verdade"){
-      showModal("Verdade", "SYS-202",
-        "Eu vou falar simples:<br><br><b>eu gosto de ter você por perto</b>.<br>" +
-        "Mesmo quando “perto” é de outro jeito.");
+      toast("t-ok","Verdade","ok… sem drama");
+      showModal("Verdade", "SYS-202", "Eu vou falar simples:<br><br><b>eu gosto de ter você por perto</b>.<br>Mesmo quando “perto” é de outro jeito.");
     }else{
-      showModal("Surpresa", "SYS-203",
-        "⚠️ Curiosidade detectada.<br><br>" +
-        "Você desbloqueou um bônus: <b>o sistema vai ficar mais fofo no final</b>.");
+      toast("t-warn","Bônus","final ficou mais fofo");
+      showModal("Surpresa", "SYS-203", "⚠️ Curiosidade detectada.<br><br>Você desbloqueou um bônus: <b>o sistema vai ficar mais fofo no final</b>.");
     }
 
     setState("FORM");
@@ -841,9 +835,10 @@
     const beleza = ($("beleza").value||"").trim();
 
     if(!nome){
+      toast("t-err","Campo obrigatório","o sistema precisa saber seu nome 😌");
       showModal("Entrada obrigatória", "SYS-101",
-        "Campo <b>Nome</b> não pode ficar vazio 😌<br><br>" +
-        "O sistema precisa saber quem ele vai elogiar com responsabilidade.");
+        "Campo <b>Nome</b> não pode ficar vazio 😌<br><br>O sistema precisa saber quem ele vai elogiar com responsabilidade.");
+      buzz([30,40,30]);
       return;
     }
 
@@ -852,32 +847,26 @@
 
     const ok = normalizeBeauty(beleza);
     if(!ok){
+      toast("t-warn","Correção automática","beleza ajustada para: infinito");
       showModal("ERRO CRÍTICO", "SYS-666",
-        "Valor inválido.<br><br>" +
-        "🔧 Correção automática aplicada: <b>infinito</b>.<br>" +
-        "Motivo: o sistema não aceita beleza baixa.");
+        "Valor inválido.<br><br>🔧 Correção automática aplicada: <b>infinito</b>.<br>Motivo: o sistema não aceita beleza baixa.");
       $("beleza").value="infinito";
+      buzz([25,25,25]);
       return;
-    }
-    session.beleza="infinito";
-
-    if(nome.toLowerCase()==="loira"){
-      showModal("Aviso", "SYS-112",
-        "Você colocou <b>Loira</b> no nome…<br>" +
-        "Ok. Eu aceito. Ficou fofo 😄");
     }
 
     $("sub").textContent = `alvo: ${session.apelido} • protocolo: sorriso`;
     $("finalTitle").textContent = `${session.apelido}…`;
 
-    setState("QUIZ");
+    toast("t-ok","Registro concluído",`bem-vinda, ${session.apelido}`);
+    buzz([15]);
+
+    setState("SCANNING");
     go("s4");
   });
 
+  // (mantive o quiz simples pra não alongar demais — foco no efeito)
   $("btnToScan").addEventListener("click", ()=>{
-    session.q1 = $("q1").value;
-    session.q2 = $("q2").value;
-    session.q3 = $("q3").value;
     setState("SCANNING");
     go("s5");
     runScan();
@@ -888,36 +877,29 @@
     $("p2").style.width="0%";
     $("btnToCompat").disabled = true;
 
-    const moodTxt = {leve:"leve", seria:"séria", cansada:"cansada", saudade:"com saudade"}[session.q1] || "leve";
-    const powerTxt = {teletransporte:"teletransporte", parar_tempo:"parar o tempo", ler_mentes:"ler mentes", cura:"cura"}[session.q2] || "teletransporte";
-    const styleTxt = {simples:"simples", intensa:"intensa"}[session.q3] || "simples";
-
     const lines = [
-      {t:"[SYS] Iniciando scanner de compatibilidade…", c:""},
-      {t:`[DAT] Nome informado: ${session.nome}`, c:"ok"},
+      {t:"[SYS] Iniciando scanner…", c:""},
+      {t:`[DAT] Nome: ${session.nome}`, c:"ok"},
       {t:`[DAT] Apelido: ${session.apelido}`, c:"ok"},
-      {t:`[DAT] Beleza: ${session.beleza} (confirmado pelo sistema).`, c:"ok"},
-      {t:`[CHK] Humor do dia: ${moodTxt}`, c:"warn"},
-      {t:`[CHK] Superpoder: ${powerTxt}`, c:"warn"},
-      {t:`[CHK] Estilo: ${styleTxt}`, c:"warn"},
+      {t:`[DAT] Beleza: infinito (confirmado).`, c:"ok"},
       {t:"[CHK] Procurando defeitos…", c:""},
       {t:"[ERR] Nenhum defeito encontrado (0 resultados).", c:"err"},
       {t:"[OK ] Detectado: presença + sorriso + impacto.", c:"ok"},
       {t:"[OK ] Iniciando cálculo de compatibilidade…", c:"ok"}
     ];
 
-    const termEl = $("term");
     for(let i=0;i<lines.length;i++){
       const div = document.createElement("div");
       div.className = lines[i].c;
       div.textContent = lines[i].t;
-      termEl.appendChild(div);
+      $("term").appendChild(div);
       $("p2").style.width = `${Math.min(100, (i+1)* (100/lines.length))}%`;
-      await sleep(360);
+      if(i===5) buzz([12]);
+      await sleep(320);
     }
 
-    await sleep(200);
     $("btnToCompat").disabled = false;
+    toast("t-ok","Scanner finalizado","pronto para calcular");
   }
 
   $("btnToCompat").addEventListener("click", ()=>{
@@ -926,9 +908,10 @@
     runCompat();
   });
 
-  // ✅ compat sem símbolo ∞
+  // números vivos na compatibilidade
   async function runCompat(){
-    $("btnToText").disabled = true;
+    $("btnToDistance").disabled = true;
+
     const el = $("compat");
     const hint = $("compatHint");
     el.textContent = "100%";
@@ -937,28 +920,51 @@
     const seq = [100, 180, 260, 380, 520, 740, 980, 1300, 2100, 3800, 9999];
     for(const n of seq){
       el.textContent = `${n}%`;
-      await sleep(120);
+      buzz([8]);
+      await sleep(110);
     }
 
-    // “estoura” sem usar símbolo de infinito
     el.textContent = "VALOR INFINITO";
-    await sleep(450);
+    buzz([20,40,20]);
+    await sleep(420);
 
     hint.innerHTML =
       `<span class="err">⚠️ ERRO DE CÁLCULO</span><br>` +
       `A nossa compatibilidade é tão grande que nem o sistema é capaz de calcular.`;
-    await sleep(250);
 
-    $("btnToText").disabled = false;
+    toast("t-warn","Sistema sobrecarregado","compatibilidade fora do limite");
+    $("btnToDistance").disabled = false;
   }
 
-  // Ir para a nova tela de texto longo
-  $("btnToText").addEventListener("click", ()=>{
+  $("btnToDistance").addEventListener("click", ()=>{
+    setState("RADAR");
+    go("s6a");
+    runDistance();
+  });
+
+  // “mapa da distância” (poético/tech)
+  async function runDistance(){
+    const out = $("distTerm");
+    out.textContent = "";
+    const lines = [
+      "[SYS] Carregando radar…",
+      "[DAT] Distância física: variável.",
+      "[DAT] Presença: constante.",
+      "[OK ] Mesmo de outra cidade… você fica perto.",
+      "[OK ] Protocolo ativado: cuidado."
+    ];
+    for(const line of lines){
+      out.textContent += line + "\n";
+      await sleep(260);
+    }
+    toast("t-ok","Radar concluído","vamos continuar 😌");
+  }
+
+  $("btnToTextLong").addEventListener("click", ()=>{
     setState("NOTE");
     go("s6b");
   });
 
-  // continuar da tela longa para escolhas
   $("btnToChoices2").addEventListener("click", ()=>{
     setState("CHOICE");
     go("s7");
@@ -970,11 +976,14 @@
     session.choices.c3 = $("c3").checked;
 
     if(!session.choices.c1 && !session.choices.c2 && !session.choices.c3){
-      showModal("Escolha necessária", "SYS-301",
-        "Marca pelo menos <b>uma</b>…<br><br>" +
-        "Eu prometo que nenhuma opção dá problema (só… dá sorriso).");
+      toast("t-err","Escolha necessária","marca pelo menos uma opção");
+      showModal("Escolha necessária", "SYS-301", "Marca pelo menos <b>uma</b>…<br><br>Eu prometo que nenhuma opção dá problema (só… dá sorriso).");
+      buzz([25,25,25]);
       return;
     }
+
+    toast("t-ok","Escolhas registradas","o final vai mudar com base nisso");
+    buzz([18]);
 
     setState("SURPRISE");
     go("s8");
@@ -1002,6 +1011,15 @@
 
     if(session.secret==="surpresa"){
       textParts.push("Bônus desbloqueado: isso aqui ficou mais fofo do que eu planejei.");
+    }
+
+    // ramificação REAL (muda o clima do final)
+    if(c2 && !c1 && !c3){
+      textParts.push("Nota do sistema: final em modo ‘calmo’ ativado.");
+    } else if(c1 && !c2){
+      textParts.push("Nota do sistema: final em modo ‘direto’ ativado.");
+    } else if(c3){
+      textParts.push("Nota do sistema: linha bônus no final desbloqueada.");
     }
 
     $("s8title").textContent = title;
@@ -1044,20 +1062,37 @@
     const cinema = $("cinema");
     cinema.classList.add("on");
 
-    const lines = ["L1","L2","L3","L4","L5"].map($);
+    const lines = ["L1","L2","L3","L4","L5"].map(id=>$(id));
     lines.forEach(l=>l.classList.remove("show"));
     $("hiddenNote").style.opacity = 0;
 
+    // ramificação real no final (uma linha bônus suave)
+    const {c1,c2,c3} = session.choices;
+    if(c3){
+      // adiciona uma frase bônus logo depois do L3 (sem mudar seu texto principal)
+      const bonusId = "LBONUS";
+      if(!$(bonusId)){
+        const bonus = document.createElement("p");
+        bonus.id = bonusId;
+        bonus.className = "reveal-line";
+        bonus.innerHTML = "E eu gosto disso de um jeito quieto, mas muito verdadeiro.";
+        lines[2].insertAdjacentElement("afterend", bonus);
+      }
+    }
+
+    const order = ["L1","L2","L3", (session.choices.c3 ? "LBONUS" : null), "L4","L5"].filter(Boolean);
+
     await sleep(180);
-    lines[0].classList.add("show");
-    await sleep(520);
-    lines[1].classList.add("show");
-    await sleep(520);
-    lines[2].classList.add("show");
-    await sleep(620);
-    lines[3].classList.add("show");
-    await sleep(720);
-    lines[4].classList.add("show");
+    for(const id of order){
+      $(id).classList.add("show");
+      buzz([10]);
+      // ritmo muda conforme escolhas
+      if(c2 && !c1) await sleep(640);      // mais calmo
+      else if(c1 && !c2) await sleep(470); // mais direto
+      else await sleep(560);               // padrão
+    }
+
+    toast("t-ok","Final entregue","lê no seu tempo");
   }
 
   $("btnPlay").addEventListener("click", ()=>{
@@ -1066,11 +1101,29 @@
     wrap.style.display = "block";
     iframe.src = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&playsinline=1&rel=0`;
 
+    toast("t-ok","Música","tocando…");
     setTimeout(()=>{ $("hiddenNote").style.opacity = 1; }, 6500);
   });
 
   $("btnShowPhotos").addEventListener("click", ()=>{
     $("gallery").style.display = "grid";
+    toast("t-ok","Memórias","carregadas");
+  });
+
+  // easter egg: 3 toques no título
+  let taps = 0;
+  $("finalTitle").addEventListener("click", async ()=>{
+    taps++;
+    if(taps===1) toast("t-warn","Hmm…","curiosidade detectada");
+    if(taps>=3){
+      taps = 0;
+      toast("t-ok","Easter egg","desbloqueado");
+      showModal("Tela Secreta", "SYS-777",
+        "Você desbloqueou um detalhe…<br><br>" +
+        "<b>Se você soubesse o quanto eu gosto de te ter na minha vida,</b><br>" +
+        "você ia entender por que eu fiz tudo isso.");
+      buzz([25,25,60]);
+    }
   });
 
   $("hiddenNote").addEventListener("click", ()=>{
@@ -1079,7 +1132,6 @@
       "Chegam pra fazer o lugar existir.<br><br>" +
       "<b>Você é uma delas.</b>");
   });
-
 </script>
 </body>
 </html>
