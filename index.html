@@ -1,303 +1,1063 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Verificação de Compatibilidade™</title>
 
 <style>
-:root{
-  --bg1:#06060f;
-  --bg2:#0b1222;
-  --glass:rgba(255,255,255,.08);
-  --line:rgba(255,255,255,.14);
-  --txt:#eef0ff;
-  --muted:#b9bfdc;
-  --accent:#6d5cff;
-  --good:#22c55e;
-  --danger:#ff3b30;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  min-height:100svh;
-  display:grid;
-  place-items:center;
-  font-family:system-ui,Segoe UI,Roboto,Arial;
-  background:
-    radial-gradient(900px 600px at 15% 10%, rgba(109,92,255,.25), transparent 60%),
-    radial-gradient(800px 600px at 80% 80%, rgba(34,197,94,.18), transparent 60%),
-    linear-gradient(160deg,var(--bg1),var(--bg2));
-  color:var(--txt);
-  padding:16px;
-}
+  :root{
+    --bg0:#05050b;
+    --bg1:#070915;
+    --bg2:#0b1224;
+    --glass:rgba(255,255,255,.08);
+    --glass2:rgba(255,255,255,.12);
+    --line:rgba(255,255,255,.14);
+    --txt:rgba(255,255,255,.92);
+    --muted:rgba(255,255,255,.62);
+    --accent:#6d5cff;
+    --accent2:#22c55e;
+    --warn:#ffcc00;
+    --danger:#ff3b30;
+    --shadow:0 30px 100px rgba(0,0,0,.72);
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --r:22px;
+  }
 
-.app{
-  width:min(460px,100%);
-  border-radius:28px;
-  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.05));
-  border:1px solid var(--line);
-  box-shadow:0 30px 90px rgba(0,0,0,.7);
-  backdrop-filter: blur(14px);
-  overflow:hidden;
-}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    color:var(--txt);
+    background:
+      radial-gradient(1100px 720px at 12% 10%, rgba(109,92,255,.24), transparent 60%),
+      radial-gradient(900px 700px at 85% 78%, rgba(34,197,94,.16), transparent 58%),
+      radial-gradient(900px 620px at 70% 18%, rgba(255,204,0,.10), transparent 55%),
+      linear-gradient(160deg, var(--bg0), var(--bg2));
+    display:grid;
+    place-items:center;
+    padding:16px;
+    overflow-x:hidden;
+  }
 
-header{
-  padding:14px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid var(--line);
-  background:rgba(0,0,0,.25);
-}
-header b{font-size:14px}
-header span{font-size:11px;color:var(--muted)}
+  /* partículas + glow */
+  .fx{
+    position:fixed; inset:-40px;
+    pointer-events:none;
+    background:
+      radial-gradient(2px 2px at 12% 28%, rgba(255,255,255,.22), transparent 60%),
+      radial-gradient(1px 1px at 35% 18%, rgba(255,255,255,.18), transparent 60%),
+      radial-gradient(2px 2px at 65% 12%, rgba(255,255,255,.18), transparent 60%),
+      radial-gradient(1px 1px at 78% 44%, rgba(255,255,255,.18), transparent 60%),
+      radial-gradient(2px 2px at 22% 78%, rgba(255,255,255,.16), transparent 60%),
+      radial-gradient(1px 1px at 88% 82%, rgba(255,255,255,.16), transparent 60%);
+    opacity:.65;
+    filter: blur(.2px);
+    animation: floaty 8s ease-in-out infinite alternate;
+  }
+  @keyframes floaty{
+    from{ transform: translateY(0) }
+    to{ transform: translateY(-14px) }
+  }
 
-main{padding:14px}
-.screen{display:none;animation:fade .25s ease both}
-.screen.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .app{
+    width:min(480px, 100%);
+    border-radius:28px;
+    border:1px solid rgba(255,255,255,.16);
+    background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(14px);
+    overflow:hidden;
+    position:relative;
+  }
 
-.card{
-  border-radius:22px;
-  padding:16px;
-  background:var(--glass);
-  border:1px solid var(--line);
-}
+  header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    padding:14px 14px 12px;
+    border-bottom:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.22);
+  }
+  .brand{min-width:0}
+  .brand b{
+    display:block;
+    font-size:13px;
+    letter-spacing:.2px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .brand span{
+    display:block;
+    margin-top:3px;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--muted);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .pill{
+    font-family:var(--mono);
+    font-size:11px;
+    padding:7px 10px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.08);
+    color: rgba(255,255,255,.86);
+    user-select:none;
+    white-space:nowrap;
+  }
 
-h2{margin:0 0 10px;font-size:17px}
-p{margin:8px 0;line-height:1.5}
+  main{ padding:14px }
+  .screen{ display:none; animation: in .22s ease both }
+  .screen.active{ display:block }
+  @keyframes in{
+    from{ opacity:0; transform: translateY(12px); filter: blur(3px) }
+    to{ opacity:1; transform:none; filter: blur(0) }
+  }
 
-input,select{
-  width:100%;
-  padding:12px;
-  margin-top:8px;
-  border-radius:14px;
-  border:1px solid var(--line);
-  background:rgba(0,0,0,.35);
-  color:var(--txt);
-}
+  .card{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.20);
+    border-radius: var(--r);
+    padding:16px;
+    position:relative;
+    overflow:hidden;
+  }
+  .kicker{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+  h1,h2{margin:0 0 10px}
+  h1{font-size:18px; font-weight:900}
+  h2{font-size:15px; font-weight:900}
+  p{margin:8px 0; color:rgba(255,255,255,.86); line-height:1.5}
+  .muted{color:var(--muted)}
+  .small{font-size:12px; color:var(--muted)}
 
-button{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border-radius:14px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.12);
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
-  transition:.15s;
-}
-button:hover{filter:brightness(1.1)}
-.primary{
-  background:linear-gradient(180deg,var(--accent),#5846e5);
-}
-.good{
-  background:linear-gradient(180deg,var(--good),#16a34a);
-}
+  .btns{display:flex; gap:10px; margin-top:12px}
+  button{
+    width:100%;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.09);
+    color: rgba(255,255,255,.94);
+    font-weight:900;
+    border-radius: 16px;
+    padding:12px 14px;
+    cursor:pointer;
+    transition: transform .08s ease, filter .15s ease, background .15s ease;
+  }
+  button:active{ transform: translateY(1px) }
+  button:hover{ filter: brightness(1.07) }
+  .primary{
+    background: linear-gradient(180deg, rgba(109,92,255,.95), rgba(89,70,230,.95));
+    border-color: rgba(109,92,255,.50);
+    box-shadow: 0 16px 40px rgba(109,92,255,.18);
+  }
+  .good{
+    background: linear-gradient(180deg, rgba(34,197,94,.85), rgba(22,163,74,.85));
+    border-color: rgba(34,197,94,.45);
+    box-shadow: 0 16px 40px rgba(34,197,94,.14);
+  }
+  .ghost{ background: rgba(255,255,255,.06) }
+  .danger{ background: rgba(255,59,48,.16); border-color: rgba(255,59,48,.40) }
 
-.progress{
-  height:10px;
-  background:rgba(255,255,255,.14);
-  border-radius:99px;
-  overflow:hidden;
-  margin-top:12px;
-}
-.bar{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,var(--good),var(--accent));
-  transition:.4s;
-}
+  label{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    color: var(--muted);
+    margin-top:10px;
+  }
+  input, select{
+    width:100%;
+    margin-top:8px;
+    padding:12px 12px;
+    border-radius: 14px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.22);
+    color: var(--txt);
+    outline:none;
+    font-size:14px;
+  }
+  input::placeholder{ color: rgba(255,255,255,.35) }
 
-.term{
-  font-family:monospace;
-  font-size:12px;
-  background:rgba(0,0,0,.4);
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:12px;
-  min-height:150px;
-  white-space:pre-wrap;
-}
+  .progress{
+    height: 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.06);
+    overflow:hidden;
+    margin-top:12px;
+  }
+  .bar{
+    height:100%;
+    width:0%;
+    background: linear-gradient(90deg, rgba(34,197,94,.95), rgba(109,92,255,.95));
+    transition: width .35s ease;
+  }
 
-.gallery{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:14px;
-}
-.gallery img{
-  width:100%;
-  border-radius:16px;
-}
+  /* terminal scan */
+  .terminal{
+    margin-top:12px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.12);
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.14));
+    padding:12px;
+    font-family:var(--mono);
+    font-size:12px;
+    line-height:1.42;
+    min-height:150px;
+    white-space: pre-wrap;
+    position:relative;
+    overflow:hidden;
+  }
+  .scanline{
+    position:absolute; left:0; right:0; height:2px;
+    background: rgba(255,204,0,.90);
+    box-shadow: 0 0 18px rgba(255,204,0,.30);
+    top:-3px;
+    animation: scan 1.2s linear infinite;
+    opacity:.9;
+  }
+  @keyframes scan{
+    0%{transform:translateY(0)}
+    100%{transform:translateY(270px)}
+  }
+  .ok{color:rgba(34,197,94,.95)}
+  .warn{color:rgba(255,204,0,.95)}
+  .err{color:rgba(255,59,48,.95)}
 
-.yt{display:none;margin-top:14px;border-radius:16px;overflow:hidden}
-iframe{width:100%;height:240px;border:0}
+  /* compat counter big */
+  .big{
+    font-family:var(--mono);
+    font-size:34px;
+    font-weight:900;
+    letter-spacing:.4px;
+    margin:6px 0 2px;
+  }
+  .glow{
+    position:absolute; inset:-40px;
+    background:
+      radial-gradient(400px 180px at 40% 20%, rgba(109,92,255,.18), transparent 70%),
+      radial-gradient(380px 180px at 60% 80%, rgba(34,197,94,.12), transparent 70%);
+    opacity:.9;
+    pointer-events:none;
+  }
 
-.hidden{
-  margin-top:12px;
-  font-size:11px;
-  color:#c9ccff;
-  opacity:0;
-  transition:opacity 1s;
-  cursor:pointer;
-}
+  /* checkboxes premium */
+  .checks{margin-top:10px; display:flex; flex-direction:column; gap:10px}
+  .check{
+    display:flex; gap:12px; align-items:flex-start;
+    padding:12px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.05);
+    cursor:pointer;
+    transition: filter .15s ease, transform .08s ease;
+  }
+  .check:active{ transform: translateY(1px) }
+  .check input{ margin-top:2px; width:18px; height:18px }
+  .check b{display:block; font-size:13px}
+  .check small{display:block; margin-top:3px; color:rgba(255,255,255,.62); font-family:var(--mono); font-size:11px}
+
+  /* final cinematic */
+  .cinema{
+    position:relative;
+    overflow:hidden;
+  }
+  .cinema::before{
+    content:"";
+    position:absolute; inset:-2px;
+    background:
+      radial-gradient(620px 260px at 50% 18%, rgba(109,92,255,.22), transparent 65%),
+      radial-gradient(520px 220px at 40% 88%, rgba(34,197,94,.14), transparent 70%);
+    opacity:0;
+    transition: opacity .9s ease;
+    pointer-events:none;
+  }
+  .cinema.on::before{opacity:1}
+
+  .reveal-line{
+    opacity:0;
+    transform: translateY(8px);
+    filter: blur(2px);
+    transition: opacity .7s ease, transform .7s ease, filter .7s ease;
+  }
+  .reveal-line.show{
+    opacity:1;
+    transform:none;
+    filter: blur(0);
+  }
+
+  .gallery{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:10px;
+    margin-top:12px;
+  }
+  .ph{
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.12);
+    overflow:hidden;
+    background: rgba(255,255,255,.06);
+    aspect-ratio:1/1;
+    position:relative;
+  }
+  .ph img{ width:100%; height:100%; object-fit:cover; display:block }
+  .ph span{
+    position:absolute; left:10px; right:10px; bottom:10px;
+    padding:8px 10px;
+    border-radius:999px;
+    background: rgba(0,0,0,.38);
+    border:1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(6px);
+    font-size:11px;
+    color: rgba(255,255,255,.90);
+  }
+
+  /* youtube embed */
+  .ytWrap{
+    margin-top:12px;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.06);
+    display:none;
+  }
+  .ytWrap iframe{width:100%; height:240px; border:0; display:block}
+
+  /* hidden note */
+  .hidden-note{
+    margin-top:12px;
+    font-family:var(--mono);
+    font-size:11px;
+    color: rgba(203,213,255,.90);
+    opacity:0;
+    transition: opacity 1s ease;
+    cursor:pointer;
+    user-select:none;
+  }
+
+  /* modal premium */
+  .modal{
+    position:fixed; inset:0;
+    display:none;
+    place-items:center;
+    padding:16px;
+    background: rgba(0,0,0,.72);
+    z-index:99;
+  }
+  .modal.show{display:grid}
+  .pop{
+    width:min(480px,100%);
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.16);
+    background: rgba(10,10,14,.92);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+  .pop header{
+    border-bottom:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.04);
+  }
+  .pop .head{
+    padding:12px 14px 10px;
+  }
+  .pop .head b{display:block; font-size:13px}
+  .pop .head span{display:block; margin-top:2px; font-family:var(--mono); font-size:11px; color: rgba(255,255,255,.62)}
+  .pop main{padding:14px}
+  .pop p{margin:0; color:rgba(255,255,255,.86); line-height:1.45}
+  .shake{animation: shake .22s ease}
+  @keyframes shake{
+    0%,100%{transform:translateX(0)}
+    25%{transform:translateX(-7px)}
+    75%{transform:translateX(7px)}
+  }
+
+  footer{
+    padding:10px 14px 14px;
+    border-top:1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.18);
+    font-family:var(--mono);
+    font-size:11px;
+    color: rgba(255,255,255,.55);
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+  }
 </style>
 </head>
 
 <body>
+<div class="fx"></div>
 
 <div class="app">
-<header>
-  <div>
-    <b>Verificação de Compatibilidade™</b><br>
-    <span>protocolo: sinceridade</span>
-  </div>
-  <span id="status">IDLE</span>
-</header>
-
-<main>
-
-<section class="screen active" id="s1">
-  <div class="card">
-    <h2>Oi… 😌</h2>
-    <p><b>Tem coisas que a gente sente tão forte que merecem um jeito diferente de serem ditas.</b></p>
-    <button class="primary" onclick="go(2)">INICIAR</button>
-    <button onclick="go(99)">botão proibido</button>
-  </div>
-</section>
-
-<section class="screen" id="s99">
-  <div class="card">
-    <h2>Você é curiosa 😏</h2>
-    <button onclick="alert('Você tem um jeito que melhora o meu dia.')">Quero rir</button>
-    <button onclick="alert('Tem gente que chega e fica.')">Quero uma verdade</button>
-    <button onclick="alert('Você acalma mais do que imagina.')">Quero surpresa</button>
-    <button class="primary" onclick="go(2)">CONTINUAR</button>
-  </div>
-</section>
-
-<section class="screen" id="s2">
-  <div class="card">
-    <h2>Rapidinho…</h2>
-    <input id="nome" placeholder="Seu nome">
-    <input id="apelido" placeholder="Apelido (opcional)">
-    <input id="beleza" placeholder="Nível de beleza (∞)">
-    <button class="primary" onclick="validar()">CONTINUAR</button>
-  </div>
-</section>
-
-<section class="screen" id="s3">
-  <div class="card">
-    <h2>Teste de humor</h2>
-    <select id="humor">
-      <option>Leve</option>
-      <option>Séria</option>
-      <option>Com saudade</option>
-    </select>
-    <button class="primary" onclick="scan()">INICIAR SCANNER</button>
-  </div>
-</section>
-
-<section class="screen" id="s4">
-  <div class="card">
-    <h2>Escaneando…</h2>
-    <div class="term" id="term"></div>
-    <div class="progress"><div class="bar" id="bar"></div></div>
-    <button class="primary" onclick="go(5)">VER RELATÓRIO</button>
-  </div>
-</section>
-
-<section class="screen" id="s5">
-  <div class="card">
-    <h2>Compatibilidade</h2>
-    <p id="comp">Calculando…</p>
-    <button class="good" onclick="go(6)">CONTINUAR</button>
-  </div>
-</section>
-
-<section class="screen" id="s6">
-  <div class="card">
-    <h2>Loira…</h2>
-    <p>
-      <b>Eu amo muito você e não quero que você saia da minha vida nunca.</b><br>
-      Mesmo com a distância, você é presença.<br>
-      Está nos meus pensamentos, no meu cuidado e no jeito que eu torço por você.<br><br>
-      Se um dia você precisar conversar, respirar fundo ou simplesmente não explicar nada,
-      eu vou estar sempre aqui pra você.<br><br>
-      <b>Conta comigo. Sempre.</b>
-    </p>
-
-    <button class="primary" onclick="play()">▶ Tocar a música</button>
-
-    <div class="yt" id="yt">
-      <iframe id="iframe" allow="autoplay; encrypted-media"></iframe>
+  <header>
+    <div class="brand">
+      <b>Verificação de Compatibilidade™</b>
+      <span id="sub">alvo: Loira • protocolo: sorriso</span>
     </div>
+    <div class="pill">STATUS: <span id="st">IDLE</span></div>
+  </header>
 
-    <div class="gallery">
-      <img src="./foto1.jpg">
-      <img src="./foto2.jpg">
-      <img src="./foto3.jpg">
-      <img src="./foto4.jpg">
-    </div>
+  <main>
 
-    <div class="hidden" id="hidden">nem tudo precisa ser dito de uma vez.</div>
+    <!-- S1: abertura -->
+    <section class="screen active" id="s1">
+      <div class="card">
+        <div class="kicker">BOOT → iniciar_experiência()</div>
+        <h1>Oi… 😌</h1>
+        <p><b>Tem coisas que a gente sente tão forte que merecem um jeito diferente de serem ditas.</b></p>
+        <p class="small">Prometo: não é interrogatório. É só… diferente.</p>
+
+        <div class="btns">
+          <button class="primary" id="btnStart">INICIAR</button>
+          <button class="ghost" id="btnForbidden">botão proibido</button>
+        </div>
+
+        <div class="progress"><div class="bar" id="p1"></div></div>
+      </div>
+    </section>
+
+    <!-- S2: tela secreta real -->
+    <section class="screen" id="s2">
+      <div class="card">
+        <div class="glow"></div>
+        <div class="kicker">SECRET → curiosidade_detectada()</div>
+        <h2>Você clicou 😏</h2>
+        <p>Ok. Aqui é a área que o sistema finge que não existe. Escolhe uma opção:</p>
+
+        <div class="checks">
+          <label class="check">
+            <input type="radio" name="secret" value="rir" checked>
+            <div>
+              <b>Quero rir um pouco</b>
+              <small>resposta rápida • zero julgamento</small>
+            </div>
+          </label>
+
+          <label class="check">
+            <input type="radio" name="secret" value="verdade">
+            <div>
+              <b>Quero uma verdade</b>
+              <small>sem drama • só uma coisa bonita</small>
+            </div>
+          </label>
+
+          <label class="check">
+            <input type="radio" name="secret" value="surpresa">
+            <div>
+              <b>Quero uma surpresa</b>
+              <small>nível: “uai…”</small>
+            </div>
+          </label>
+        </div>
+
+        <div class="btns">
+          <button class="primary" id="btnSecretGo">CONTINUAR</button>
+          <button class="ghost" data-back="s1">VOLTAR</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- S3: coleta com pegadinhas -->
+    <section class="screen" id="s3">
+      <div class="card">
+        <div class="kicker">FORM → dados_minimos()</div>
+        <h2>Rapidinho…</h2>
+        <p class="muted">Só pra eu registrar oficialmente. (Prometo que vai valer a pena.)</p>
+
+        <label>👤 Nome <span>(obrigatório)</span></label>
+        <input id="nome" placeholder="Digite seu nome…" autocomplete="off">
+
+        <label>💬 Apelido <span>(opcional)</span></label>
+        <input id="apelido" placeholder="Ex: Loira…" autocomplete="off">
+
+        <label>✨ Nível de beleza <span>(aceita: ∞)</span></label>
+        <input id="beleza" placeholder="∞" autocomplete="off">
+
+        <div class="btns">
+          <button class="primary" id="btnFormNext">CONTINUAR</button>
+          <button class="ghost" data-back="s1">VOLTAR</button>
+        </div>
+
+        <p class="small">Dica: esse sistema é exigente com beleza. (E com sinceridade.)</p>
+      </div>
+    </section>
+
+    <!-- S4: teste humor -->
+    <section class="screen" id="s4">
+      <div class="card">
+        <div class="kicker">CHECK → calibrar_humor()</div>
+        <h2>Teste de humor (3 perguntas)</h2>
+
+        <label>1) Hoje você tá mais…</label>
+        <select id="q1">
+          <option value="leve">Leve</option>
+          <option value="seria">Séria</option>
+          <option value="cansada">Cansada</option>
+          <option value="saudade">Com saudade 👀</option>
+        </select>
+
+        <label>2) Escolha um superpoder</label>
+        <select id="q2">
+          <option value="teletransporte">Teletransporte (pra encurtar distância)</option>
+          <option value="parar_tempo">Parar o tempo (só pra conversar)</option>
+          <option value="ler_mentes">Ler mentes (perigoso)</option>
+          <option value="cura">Cura (pra cuidar de quem importa)</option>
+        </select>
+
+        <label>3) Você prefere uma coisa simples ou intensa?</label>
+        <select id="q3">
+          <option value="simples">Simples (mas de verdade)</option>
+          <option value="intensa">Intensa (mas com calma)</option>
+        </select>
+
+        <div class="btns">
+          <button class="primary" id="btnToScan">INICIAR SCANNER</button>
+          <button class="ghost" data-back="s3">VOLTAR</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- S5: scanner -->
+    <section class="screen" id="s5">
+      <div class="card">
+        <div class="kicker">SCAN → detectar_importancia()</div>
+        <h2>Escaneando…</h2>
+        <p class="muted">Fica tranquila. É só pra eu ter “provas” do que eu já sei.</p>
+
+        <div class="terminal" id="terminal">
+          <div class="scanline"></div>
+          <div id="term"></div>
+        </div>
+
+        <div class="progress"><div class="bar" id="p2"></div></div>
+
+        <div class="btns">
+          <button class="primary" id="btnToCompat" disabled>CONTINUAR</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- S6: compatibilidade infinito + erro -->
+    <section class="screen" id="s6">
+      <div class="card">
+        <div class="glow"></div>
+        <div class="kicker">REPORT → calcular_compatibilidade()</div>
+        <h2>Compatibilidade</h2>
+        <div class="big" id="compat">100%</div>
+        <p class="muted" id="compatHint">subindo…</p>
+
+        <div class="btns">
+          <button class="good" id="btnToChoices" disabled>AVANÇAR</button>
+          <button class="ghost" data-back="s5">VOLTAR</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- S7: escolhas (checkbox) -->
+    <section class="screen" id="s7">
+      <div class="card">
+        <div class="kicker">CHOICE → personalizar_surpresa()</div>
+        <h2>Escolhe uma(s) opção(ões)</h2>
+        <p class="muted">Marca o que você quiser. Cada escolha muda o que vem depois.</p>
+
+        <div class="checks">
+          <label class="check">
+            <input type="checkbox" id="c1">
+            <div>
+              <b>Uma verdade</b>
+              <small>sem pressão • sem exagero</small>
+            </div>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" id="c2">
+            <div>
+              <b>Um momento</b>
+              <small>tipo “pausar o mundo”</small>
+            </div>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" id="c3">
+            <div>
+              <b>Uma coisa que eu quase nunca digo</b>
+              <small>carinho disfarçado • risco: sorriso</small>
+            </div>
+          </label>
+        </div>
+
+        <div class="btns">
+          <button class="primary" id="btnBuildSurprise">REVELAR</button>
+          <button class="ghost" data-back="s6">VOLTAR</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- S8: surpresa baseada nas escolhas -->
+    <section class="screen" id="s8">
+      <div class="card">
+        <div class="kicker">SURPRISE → gerar_resposta()</div>
+        <h2 id="s8title">Surpresa</h2>
+        <p id="s8text" class="muted"></p>
+
+        <div class="btns">
+          <button class="primary" id="btnInsideSurprise">MAIS UMA…</button>
+          <button class="ghost" data-back="s7">VOLTAR</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- S9: surpresa dentro da surpresa + cartada final -->
+    <section class="screen" id="s9">
+      <div class="card">
+        <div class="kicker">SURPRISE++ → detalhe_escondido()</div>
+        <h2>Ok… última camada 😶‍🌫️</h2>
+        <p class="muted" id="s9text"></p>
+
+        <div class="btns">
+          <button class="good" id="btnToFinal">IR PRO FINAL</button>
+          <button class="ghost" data-back="s8">VOLTAR</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- S10: final cinematográfico -->
+    <section class="screen" id="s10">
+      <div class="card cinema" id="cinema">
+        <div class="kicker">FINAL → dizer_o_que_importa()</div>
+        <h2 id="finalTitle">Loira…</h2>
+
+        <!-- linhas com efeito (silencioso) -->
+        <p class="reveal-line" id="L1"><b>Eu amo muito você e não quero que você saia da minha vida nunca.</b></p>
+        <p class="reveal-line" id="L2">Mesmo com a distância, você é presença.</p>
+        <p class="reveal-line" id="L3">Está nos meus pensamentos, no meu cuidado e no jeito que eu torço por você.</p>
+        <p class="reveal-line" id="L4">Se um dia você precisar conversar, respirar fundo ou simplesmente não explicar nada, eu vou estar sempre aqui pra você.</p>
+        <p class="reveal-line" id="L5"><b>Conta comigo. Sempre.</b></p>
+
+        <div class="btns">
+          <button class="primary" id="btnPlay">▶ TOCAR MÚSICA</button>
+          <button class="ghost" id="btnShowPhotos">MOSTRAR FOTOS</button>
+        </div>
+
+        <div class="ytWrap" id="ytWrap">
+          <iframe id="yt" src="" allow="autoplay; encrypted-media" allowfullscreen title="Música"></iframe>
+        </div>
+
+        <div class="gallery" id="gallery" style="display:none">
+          <div class="ph"><img src="./foto1.jpg" alt="Foto 1"><span>📸</span></div>
+          <div class="ph"><img src="./foto2.jpg" alt="Foto 2"><span>📸</span></div>
+          <div class="ph"><img src="./foto3.jpg" alt="Foto 3"><span>📸</span></div>
+          <div class="ph"><img src="./foto4.jpg" alt="Foto 4"><span>📸</span></div>
+        </div>
+
+        <div class="hidden-note" id="hiddenNote">nem tudo precisa ser dito de uma vez.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>© Dev do Crush</span>
+    <span id="state">state=IDLE</span>
+  </footer>
+</div>
+
+<!-- modal -->
+<div class="modal" id="modal">
+  <div class="pop" id="pop">
+    <header>
+      <div class="head">
+        <b id="mTitle">Aviso</b>
+        <span id="mCode">SYS-000</span>
+      </div>
+    </header>
+    <main>
+      <p id="mMsg"></p>
+      <div class="btns" style="margin-top:12px">
+        <button class="primary" id="mOk">OK</button>
+      </div>
+    </main>
   </div>
-</section>
-
-</main>
 </div>
 
 <script>
-const YT="wMne8UDPN7A";
-function go(n){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('s'+n).classList.add('active');
-}
-function validar(){
-  if(!nome.value){alert("Digite seu nome 😊");return}
-  if(beleza.value!=="∞"){alert("Erro: beleza abaixo do permitido 😅");beleza.value="∞"}
-  go(3);
-}
-function scan(){
-  go(4);
-  let t=document.getElementById('term');
-  let b=document.getElementById('bar');
-  let lines=[
-    "Iniciando scanner…",
-    "Nome confirmado.",
-    "Beleza infinita detectada.",
-    "Procurando defeitos…",
-    "Nenhum encontrado.",
-    "Compatibilidade subindo…",
-    "Erro: valor infinito."
-  ];
-  let i=0;
-  let it=setInterval(()=>{
-    t.textContent+=lines[i]+"\n";
-    b.style.width=(i+1)*14+"%";
-    i++;
-    if(i>=lines.length){
-      clearInterval(it);
-      document.getElementById('comp').innerText=
-        "⚠️ ERRO DE CÁLCULO\nA compatibilidade é tão grande que nem o sistema consegue medir.";
-    }
-  },350);
-}
-function play(){
-  let yt=document.getElementById('yt');
-  let f=document.getElementById('iframe');
-  yt.style.display="block";
-  f.src=`https://www.youtube.com/embed/${YT}?autoplay=1&playsinline=1`;
-  setTimeout(()=>document.getElementById('hidden').style.opacity=1,7000);
-}
-document.getElementById('hidden').onclick=()=>{
-  alert("Algumas pessoas não chegam pra ocupar espaço.\nChegam pra fazer o lugar existir.\n\nVocê é uma delas.");
-};
-</script>
+  // Música escolhida (YouTube)
+  const YT_ID = "wMne8UDPN7A";
 
+  // helpers
+  const $ = (id)=>document.getElementById(id);
+  const setState = (v)=>{ $("st").textContent=v; $("state").textContent=`state=${v}`; };
+
+  const screens = ["s1","s2","s3","s4","s5","s6","s7","s8","s9","s10"]
+    .reduce((a,id)=>(a[id]=$(id),a),{});
+
+  function go(id){
+    Object.values(screens).forEach(s=>s.classList.remove("active"));
+    screens[id].classList.add("active");
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  // modal
+  const modal = $("modal"), pop = $("pop"), mTitle=$("mTitle"), mCode=$("mCode"), mMsg=$("mMsg");
+  function showModal(title, code, msg){
+    mTitle.textContent = title;
+    mCode.textContent = code;
+    mMsg.innerHTML = msg;
+    modal.classList.add("show");
+    pop.classList.remove("shake");
+    void pop.offsetWidth;
+    pop.classList.add("shake");
+  }
+  function hideModal(){ modal.classList.remove("show"); }
+  $("mOk").addEventListener("click", hideModal);
+  modal.addEventListener("click", (e)=>{ if(e.target===modal) hideModal(); });
+
+  // back buttons
+  document.querySelectorAll("[data-back]").forEach(b=>{
+    b.addEventListener("click", ()=>go(b.getAttribute("data-back")));
+  });
+
+  // session
+  const session = {
+    nome:"",
+    apelido:"Loira",
+    beleza:"∞",
+    q1:"leve", q2:"teletransporte", q3:"simples",
+    secret:"rir",
+    choices:{c1:false,c2:false,c3:false}
+  };
+
+  function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+
+  // S1 start
+  setState("IDLE");
+  $("p1").style.width = "10%";
+
+  $("btnStart").addEventListener("click", async ()=>{
+    setState("BOOTING");
+    $("p1").style.width="45%"; await sleep(160);
+    $("p1").style.width="72%"; await sleep(160);
+    $("p1").style.width="100%"; await sleep(130);
+    setState("FORM");
+    go("s3");
+  });
+
+  $("btnForbidden").addEventListener("click", ()=>{
+    setState("SECRET");
+    go("s2");
+  });
+
+  // S2 secret choose
+  $("btnSecretGo").addEventListener("click", ()=>{
+    const v = document.querySelector('input[name="secret"]:checked')?.value || "rir";
+    session.secret = v;
+
+    if(v==="rir"){
+      showModal("Modo Riso", "SYS-201",
+        "✅ Resultado: <b>risco alto de sorriso involuntário</b>.<br><br>" +
+        "Obs: você tem um jeito que melhora o dia… sem esforço.");
+    }else if(v==="verdade"){
+      showModal("Verdade", "SYS-202",
+        "Eu vou falar simples:<br><br><b>eu gosto de ter você por perto</b>.<br>" +
+        "Mesmo quando “perto” é de outro jeito.");
+    }else{
+      showModal("Surpresa", "SYS-203",
+        "⚠️ Curiosidade detectada.<br><br>" +
+        "Você desbloqueou um bônus: <b>o sistema vai ficar mais fofo no final</b>.");
+    }
+
+    setState("FORM");
+    go("s3");
+  });
+
+  // S3 form with pegadinhas
+  function normalizeBeauty(raw){
+    const v = (raw||"").trim().toLowerCase();
+    if(v==="∞" || v==="infinito" || v==="infinita") return "∞";
+    return null;
+  }
+
+  $("btnFormNext").addEventListener("click", ()=>{
+    const nome = ($("nome").value||"").trim();
+    const apelido = ($("apelido").value||"").trim();
+    const beleza = ($("beleza").value||"").trim();
+
+    // pegadinha 1: nome obrigatório com “drama técnico”
+    if(!nome){
+      showModal("Entrada obrigatória", "SYS-101",
+        "Campo <b>Nome</b> não pode ficar vazio 😌<br><br>" +
+        "O sistema precisa saber quem ele vai elogiar com responsabilidade.");
+      return;
+    }
+
+    // apelido: se deixar vazio, o sistema “decide”
+    session.apelido = apelido || "Loira";
+    session.nome = nome;
+
+    // pegadinha 2: beleza
+    const ok = normalizeBeauty(beleza);
+    if(!ok){
+      showModal("ERRO CRÍTICO", "SYS-666",
+        "Valor inválido.<br><br>" +
+        "🔧 Correção automática aplicada: <b>∞</b>.<br>" +
+        "Motivo: o sistema não aceita beleza baixa.");
+      $("beleza").value="∞";
+      return;
+    }
+    session.beleza="∞";
+
+    // pegadinha 3: se ela escreveu “Loira” no nome, zoa carinhoso
+    if(nome.toLowerCase()==="loira"){
+      showModal("Aviso", "SYS-112",
+        "Você colocou <b>Loira</b> no nome…<br>" +
+        "Ok. Eu aceito. Ficou fofo 😄");
+    }
+
+    $("sub").textContent = `alvo: ${session.apelido} • protocolo: sorriso`;
+    $("finalTitle").textContent = `${session.apelido}…`;
+
+    setState("QUIZ");
+    go("s4");
+  });
+
+  // S4 to scan
+  $("btnToScan").addEventListener("click", ()=>{
+    session.q1 = $("q1").value;
+    session.q2 = $("q2").value;
+    session.q3 = $("q3").value;
+    setState("SCANNING");
+    go("s5");
+    runScan();
+  });
+
+  // S5 scan
+  async function runScan(){
+    $("term").textContent = "";
+    $("p2").style.width="0%";
+    $("btnToCompat").disabled = true;
+
+    const moodTxt = {
+      leve:"leve", seria:"séria", cansada:"cansada", saudade:"com saudade"
+    }[session.q1] || "leve";
+
+    const powerTxt = {
+      teletransporte:"teletransporte",
+      parar_tempo:"parar o tempo",
+      ler_mentes:"ler mentes",
+      cura:"cura"
+    }[session.q2] || "teletransporte";
+
+    const styleTxt = {simples:"simples", intensa:"intensa"}[session.q3] || "simples";
+
+    const lines = [
+      {t:"[SYS] Iniciando scanner de compatibilidade…", c:""},
+      {t:`[DAT] Nome informado: ${session.nome}`, c:"ok"},
+      {t:`[DAT] Apelido: ${session.apelido}`, c:"ok"},
+      {t:`[DAT] Beleza: ${session.beleza} (confirmado pelo sistema).`, c:"ok"},
+      {t:`[CHK] Humor do dia: ${moodTxt}`, c:"warn"},
+      {t:`[CHK] Superpoder: ${powerTxt}`, c:"warn"},
+      {t:`[CHK] Estilo: ${styleTxt}`, c:"warn"},
+      {t:"[CHK] Procurando defeitos…", c:""},
+      {t:"[ERR] Nenhum defeito encontrado (0 resultados).", c:"err"},
+      {t:"[OK ] Detectado: presença + sorriso + impacto.", c:"ok"},
+      {t:"[OK ] Iniciando cálculo de compatibilidade…", c:"ok"}
+    ];
+
+    const termEl = $("term");
+    for(let i=0;i<lines.length;i++){
+      const div = document.createElement("div");
+      div.className = lines[i].c;
+      div.textContent = lines[i].t;
+      termEl.appendChild(div);
+      $("p2").style.width = `${Math.min(100, (i+1)* (100/lines.length))}%`;
+      await sleep(360);
+    }
+
+    await sleep(200);
+    $("btnToCompat").disabled = false;
+  }
+
+  $("btnToCompat").addEventListener("click", ()=>{
+    setState("COMPAT");
+    go("s6");
+    runCompat();
+  });
+
+  // S6 compat infinite -> error poetic
+  async function runCompat(){
+    $("btnToChoices").disabled = true;
+    const el = $("compat");
+    const hint = $("compatHint");
+    el.textContent = "100%";
+    hint.textContent = "subindo…";
+
+    const seq = [100, 180, 260, 380, 520, 740, 980, 1300, 2100, 3800];
+    for(const n of seq){
+      el.textContent = `${n}%`;
+      await sleep(120);
+    }
+
+    // vira infinito
+    el.textContent = "∞";
+    hint.textContent = "…";
+    await sleep(450);
+
+    // quebra com erro poético
+    hint.innerHTML =
+      `<span class="err">⚠️ ERRO DE CÁLCULO</span><br>` +
+      `A compatibilidade detectada é grande demais.<br>` +
+      `Nem o sistema é capaz de calcular algo que cresce toda vez que você aparece.`;
+    await sleep(250);
+
+    $("btnToChoices").disabled = false;
+  }
+
+  $("btnToChoices").addEventListener("click", ()=>{
+    setState("CHOICE");
+    go("s7");
+  });
+
+  // S7 build surprise from choices
+  $("btnBuildSurprise").addEventListener("click", ()=>{
+    session.choices.c1 = $("c1").checked;
+    session.choices.c2 = $("c2").checked;
+    session.choices.c3 = $("c3").checked;
+
+    // se não marcou nada, pegadinha fofa
+    if(!session.choices.c1 && !session.choices.c2 && !session.choices.c3){
+      showModal("Escolha necessária", "SYS-301",
+        "Marca pelo menos <b>uma</b>…<br><br>" +
+        "Eu prometo que nenhuma opção dá problema (só… dá sorriso).");
+      return;
+    }
+
+    setState("SURPRISE");
+    go("s8");
+    renderSurprise();
+  });
+
+  // S8 dynamic surprise
+  function renderSurprise(){
+    const {c1,c2,c3} = session.choices;
+    let title = "Surpresa";
+    let textParts = [];
+
+    // mistura D: emocional + curioso + poético
+    if(c1){
+      title = "Uma verdade";
+      textParts.push("Sem exagero: você é alguém que faz diferença.");
+      textParts.push("Tem gente que aparece… e o dia muda de comportamento.");
+    }
+    if(c2){
+      textParts.push("Às vezes eu queria pausar o mundo só pra te ouvir por mais tempo.");
+      textParts.push("Mesmo de outra cidade, você tem um jeito de ficar perto.");
+    }
+    if(c3){
+      textParts.push("Eu nem sempre falo, mas eu reparo.");
+      textParts.push("E eu gosto do jeito que você existe.");
+    }
+
+    // tempero do botão proibido
+    if(session.secret==="surpresa"){
+      textParts.push("Bônus desbloqueado: isso aqui ficou mais fofo do que eu planejei.");
+    }
+
+    $("s8title").textContent = title;
+    $("s8text").innerHTML = textParts.map(t=>`• ${t}`).join("<br>");
+  }
+
+  $("btnInsideSurprise").addEventListener("click", ()=>{
+    setState("SURPRISE++");
+    go("s9");
+    renderInsideSurprise();
+  });
+
+  // S9 surprise inside + cartada final (pre-final)
+  function renderInsideSurprise(){
+    const {c1,c2,c3} = session.choices;
+
+    let msg = [];
+    msg.push("Ok… isso aqui é a parte que eu não colocaria em uma conversa comum.");
+    msg.push("Então eu escondi dentro do sistema.");
+
+    // cartada varia conforme escolhas (mas sempre forte)
+    if(c1 && c3){
+      msg.push("<br><b>Você é importante pra mim de um jeito bem sério.</b>");
+      msg.push("E eu não falo isso pra qualquer pessoa.");
+    } else if(c2){
+      msg.push("<br><b>Distância é só geografia.</b>");
+      msg.push("O que eu sinto não depende de endereço.");
+    } else {
+      msg.push("<br><b>Tem gente que chega e fica.</b>");
+      msg.push("E eu gosto que você exista no meu mundo.");
+    }
+
+    $("s9text").innerHTML = msg.join("<br>");
+  }
+
+  $("btnToFinal").addEventListener("click", async ()=>{
+    setState("FINAL");
+    go("s10");
+    await cinematicReveal();
+  });
+
+  // S10 cinematic reveal
+  async function cinematicReveal(){
+    const cinema = $("cinema");
+    cinema.classList.add("on");
+
+    const lines = ["L1","L2","L3","L4","L5"].map($);
+    lines.forEach(l=>l.classList.remove("show"));
+    $("hiddenNote").style.opacity = 0;
+
+    // revela com timing “silencioso”
+    await sleep(180);
+    lines[0].classList.add("show");
+    await sleep(520);
+    lines[1].classList.add("show");
+    await sleep(520);
+    lines[2].classList.add("show");
+    await sleep(620);
+    lines[3].classList.add("show");
+    await sleep(720);
+    lines[4].classList.add("show");
+  }
+
+  // play music (youtube)
+  $("btnPlay").addEventListener("click", ()=>{
+    const wrap = $("ytWrap");
+    const iframe = $("yt");
+    wrap.style.display = "block";
+    iframe.src = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&playsinline=1&rel=0`;
+
+    // depois que a música começa, aparece o bilhete escondido
+    setTimeout(()=>{ $("hiddenNote").style.opacity = 1; }, 6500);
+  });
+
+  // show photos
+  $("btnShowPhotos").addEventListener("click", ()=>{
+    $("gallery").style.display = "grid";
+  });
+
+  // hidden note -> cartada final escondida
+  $("hiddenNote").addEventListener("click", ()=>{
+    showModal("Cartada final", "SYS-LOVE",
+      "Algumas pessoas não chegam pra ocupar espaço.<br>" +
+      "Chegam pra fazer o lugar existir.<br><br>" +
+      "<b>Você é uma delas.</b>");
+  });
+
+</script>
 </body>
 </html>
