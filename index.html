@@ -37,7 +37,6 @@
     overflow-x:hidden;
   }
 
-  /* partículas + glow */
   .fx{
     position:fixed; inset:-40px;
     pointer-events:none;
@@ -53,6 +52,37 @@
     animation: floaty 8s ease-in-out infinite alternate;
   }
   @keyframes floaty{ from{transform:translateY(0)} to{transform:translateY(-14px)} }
+
+  .toasts{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:14px;
+    width:min(480px, calc(100% - 24px));
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    z-index:999;
+    pointer-events:none;
+  }
+  .toast{
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(10,10,14,.86);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 18px 50px rgba(0,0,0,.55);
+    padding:12px 14px;
+    animation: toastIn .18s ease both;
+  }
+  @keyframes toastIn{
+    from{opacity:0; transform:translateY(10px); filter: blur(2px)}
+    to{opacity:1; transform:none; filter: blur(0)}
+  }
+  .toast b{display:block;font-size:12px}
+  .toast span{display:block;margin-top:3px;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.72)}
+  .t-ok{border-color:rgba(34,197,94,.35)}
+  .t-warn{border-color:rgba(255,204,0,.35)}
+  .t-err{border-color:rgba(255,59,48,.35)}
 
   .app{
     width:min(480px, 100%);
@@ -186,7 +216,6 @@
     transition: width .35s ease;
   }
 
-  /* terminal scan */
   .terminal{
     margin-top:12px;
     border-radius:18px;
@@ -211,10 +240,8 @@
   }
   @keyframes scan{ 0%{transform:translateY(0)} 100%{transform:translateY(270px)} }
   .ok{color:rgba(34,197,94,.95)}
-  .warn{color:rgba(255,204,0,.95)}
   .err{color:rgba(255,59,48,.95)}
 
-  /* compat */
   .big{
     font-family:var(--mono);
     font-size:34px;
@@ -231,7 +258,6 @@
     pointer-events:none;
   }
 
-  /* scroll card for long text */
   .scrollBox{
     margin-top:10px;
     border-radius:18px;
@@ -248,7 +274,6 @@
     border:2px solid rgba(0,0,0,.25);
   }
 
-  /* checkboxes premium */
   .checks{margin-top:10px; display:flex; flex-direction:column; gap:10px}
   .check{
     display:flex; gap:12px; align-items:flex-start;
@@ -264,7 +289,6 @@
   .check b{display:block; font-size:13px}
   .check small{display:block; margin-top:3px; color:rgba(255,255,255,.62); font-family:var(--mono); font-size:11px}
 
-  /* final cinematic */
   .cinema{ position:relative; overflow:hidden; }
   .cinema::before{
     content:"";
@@ -285,7 +309,6 @@
   }
   .reveal-line.show{ opacity:1; transform:none; filter: blur(0); }
 
-  /* polaroid gallery */
   .gallery{
     display:grid;
     grid-template-columns: repeat(2, 1fr);
@@ -331,40 +354,6 @@
     user-select:none;
   }
 
-  /* toast */
-  .toasts{
-    position:fixed;
-    left:50%;
-    transform:translateX(-50%);
-    bottom:14px;
-    width:min(480px, calc(100% - 24px));
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    z-index:999;
-    pointer-events:none;
-  }
-  .toast{
-    pointer-events:none;
-    border-radius:16px;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(10,10,14,.86);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 18px 50px rgba(0,0,0,.55);
-    padding:12px 14px;
-    animation: toastIn .18s ease both;
-  }
-  @keyframes toastIn{
-    from{opacity:0; transform:translateY(10px); filter: blur(2px)}
-    to{opacity:1; transform:none; filter: blur(0)}
-  }
-  .toast b{display:block;font-size:12px}
-  .toast span{display:block;margin-top:3px;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.72)}
-  .t-ok{border-color:rgba(34,197,94,.35)}
-  .t-warn{border-color:rgba(255,204,0,.35)}
-  .t-err{border-color:rgba(255,59,48,.35)}
-
-  /* modal */
   .modal{
     position:fixed; inset:0;
     display:none;
@@ -431,9 +420,9 @@
     <section class="screen active" id="s1">
       <div class="card">
         <div class="kicker">BOOT → iniciar_experiência()</div>
-        <h1>Oi… 😌</h1>
-        <p><b>Tem coisas que a gente sente tão forte que merecem um jeito diferente de serem ditas.</b></p>
-        <p class="small">Prometo: não é interrogatório. É só… diferente.</p>
+        <h1>Oi, Loira 😌</h1>
+        <p><b>Eu fiz de um jeito diferente…</b> porque tem coisas que eu não queria dizer do jeito comum.</p>
+        <p class="small">Prometo: não é interrogatório. É só uma experiência rápida e bem feita.</p>
 
         <div class="btns">
           <button class="primary" id="btnStart">INICIAR</button>
@@ -474,7 +463,7 @@
       </div>
     </section>
 
-    <!-- S3 form -->
+    <!-- S3 form (pegadinhas) -->
     <section class="screen" id="s3">
       <div class="card">
         <div class="kicker">FORM → dados_minimos()</div>
@@ -495,7 +484,7 @@
           <button class="ghost" data-back="s1">VOLTAR</button>
         </div>
 
-        <p class="small">Dica: esse sistema é exigente com beleza. (E com sinceridade.)</p>
+        <p class="small">Dica: o sistema é exigente com beleza. (E com sinceridade.)</p>
       </div>
     </section>
 
@@ -570,7 +559,7 @@
       </div>
     </section>
 
-    <!-- ✅ S6A distância (novo) -->
+    <!-- S6A distância -->
     <section class="screen" id="s6a">
       <div class="card">
         <div class="glow"></div>
@@ -684,13 +673,29 @@
         </div>
 
         <div class="gallery" id="gallery" style="display:none">
-          <div class="polaroid" style="--rot:-2deg"><img src="./foto1.jpg" alt="Foto 1"><div class="cap" id="cap1">“aquela risada”</div></div>
-          <div class="polaroid" style="--rot:1.5deg"><img src="./foto2.jpg" alt="Foto 2"><div class="cap" id="cap2">“esse dia…”</div></div>
-          <div class="polaroid" style="--rot:-1deg"><img src="./foto3.jpg" alt="Foto 3"><div class="cap" id="cap3">“do jeito certo”</div></div>
-          <div class="polaroid" style="--rot:2deg"><img src="./foto4.jpg" alt="Foto 4"><div class="cap" id="cap4">“perto, mesmo longe”</div></div>
+          <div class="polaroid" style="--rot:-2deg">
+            <img src="./foto1.jpg" alt="Foto 1">
+            <div class="cap">“esse olhar me pega fácil”</div>
+          </div>
+
+          <div class="polaroid" style="--rot:1.5deg">
+            <img src="./foto2.jpg" alt="Foto 2">
+            <div class="cap">“poderosa sem esforço”</div>
+          </div>
+
+          <div class="polaroid" style="--rot:-1deg">
+            <img src="./foto3.jpg" alt="Foto 3">
+            <div class="cap">“parece cena de filme”</div>
+          </div>
+
+          <div class="polaroid" style="--rot:2deg">
+            <img src="./foto4.jpg" alt="Foto 4">
+            <div class="cap">“meu ponto fraco: seu sorriso”</div>
+          </div>
+
           <div class="polaroid" style="grid-column:1/-1; --rot:-.5deg">
             <img src="./foto5.jpg" alt="Foto 5">
-            <div class="cap" id="cap5">“a foto especial”</div>
+            <div class="cap">“e ainda assim, minha favorita é você”</div>
           </div>
         </div>
 
@@ -724,6 +729,7 @@
 </div>
 
 <script>
+  // ✅ Música via YouTube (funciona no GitHub Pages)
   const YT_ID = "wMne8UDPN7A";
   const $ = (id)=>document.getElementById(id);
 
@@ -738,7 +744,6 @@
 
   const setState = (v)=>{ $("st").textContent=v; $("state").textContent=`state=${v}`; };
 
-  // toast
   function toast(type, title, msg, ms=2200){
     const wrap = $("toasts");
     const el = document.createElement("div");
@@ -749,7 +754,6 @@
     setTimeout(()=>{ el.remove(); }, ms);
   }
 
-  // modal
   const modal = $("modal"), pop = $("pop"), mTitle=$("mTitle"), mCode=$("mCode"), mMsg=$("mMsg");
   function showModal(title, code, msg){
     mTitle.textContent = title;
@@ -778,13 +782,12 @@
 
   function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
 
-  // vibração leve (quando suportado)
   function buzz(pattern=[30]){
     if(navigator.vibrate) navigator.vibrate(pattern);
   }
 
   setState("IDLE");
-  $("p1").style.width = "10%";
+  $("p1").style.width = "12%";
 
   $("btnStart").addEventListener("click", async ()=>{
     setState("BOOTING");
@@ -842,6 +845,15 @@
       return;
     }
 
+    // Pegadinha: apelido igual ao nome
+    if(apelido && apelido.toLowerCase() === nome.toLowerCase()){
+      toast("t-warn","Pegadinha","apelido não pode ser igual ao nome 😄");
+      showModal("Pegadinha 😄", "SYS-104",
+        "O sistema detectou que você tentou usar o <b>nome</b> como <b>apelido</b>…<br><br>Não vale 😌<br>Mas eu gostei da ousadia.");
+      buzz([20,20,20]);
+      return;
+    }
+
     session.apelido = apelido || "Loira";
     session.nome = nome;
 
@@ -865,7 +877,6 @@
     go("s4");
   });
 
-  // (mantive o quiz simples pra não alongar demais — foco no efeito)
   $("btnToScan").addEventListener("click", ()=>{
     setState("SCANNING");
     go("s5");
@@ -908,7 +919,6 @@
     runCompat();
   });
 
-  // números vivos na compatibilidade
   async function runCompat(){
     $("btnToDistance").disabled = true;
 
@@ -942,7 +952,6 @@
     runDistance();
   });
 
-  // “mapa da distância” (poético/tech)
   async function runDistance(){
     const out = $("distTerm");
     out.textContent = "";
@@ -1013,15 +1022,6 @@
       textParts.push("Bônus desbloqueado: isso aqui ficou mais fofo do que eu planejei.");
     }
 
-    // ramificação REAL (muda o clima do final)
-    if(c2 && !c1 && !c3){
-      textParts.push("Nota do sistema: final em modo ‘calmo’ ativado.");
-    } else if(c1 && !c2){
-      textParts.push("Nota do sistema: final em modo ‘direto’ ativado.");
-    } else if(c3){
-      textParts.push("Nota do sistema: linha bônus no final desbloqueada.");
-    }
-
     $("s8title").textContent = title;
     $("s8text").innerHTML = textParts.map(t=>`• ${t}`).join("<br>");
   }
@@ -1066,32 +1066,12 @@
     lines.forEach(l=>l.classList.remove("show"));
     $("hiddenNote").style.opacity = 0;
 
-    // ramificação real no final (uma linha bônus suave)
-    const {c1,c2,c3} = session.choices;
-    if(c3){
-      // adiciona uma frase bônus logo depois do L3 (sem mudar seu texto principal)
-      const bonusId = "LBONUS";
-      if(!$(bonusId)){
-        const bonus = document.createElement("p");
-        bonus.id = bonusId;
-        bonus.className = "reveal-line";
-        bonus.innerHTML = "E eu gosto disso de um jeito quieto, mas muito verdadeiro.";
-        lines[2].insertAdjacentElement("afterend", bonus);
-      }
-    }
-
-    const order = ["L1","L2","L3", (session.choices.c3 ? "LBONUS" : null), "L4","L5"].filter(Boolean);
-
     await sleep(180);
-    for(const id of order){
+    for(const id of ["L1","L2","L3","L4","L5"]){
       $(id).classList.add("show");
       buzz([10]);
-      // ritmo muda conforme escolhas
-      if(c2 && !c1) await sleep(640);      // mais calmo
-      else if(c1 && !c2) await sleep(470); // mais direto
-      else await sleep(560);               // padrão
+      await sleep(560);
     }
-
     toast("t-ok","Final entregue","lê no seu tempo");
   }
 
@@ -1110,27 +1090,13 @@
     toast("t-ok","Memórias","carregadas");
   });
 
-  // easter egg: 3 toques no título
-  let taps = 0;
-  $("finalTitle").addEventListener("click", async ()=>{
-    taps++;
-    if(taps===1) toast("t-warn","Hmm…","curiosidade detectada");
-    if(taps>=3){
-      taps = 0;
-      toast("t-ok","Easter egg","desbloqueado");
-      showModal("Tela Secreta", "SYS-777",
-        "Você desbloqueou um detalhe…<br><br>" +
-        "<b>Se você soubesse o quanto eu gosto de te ter na minha vida,</b><br>" +
-        "você ia entender por que eu fiz tudo isso.");
-      buzz([25,25,60]);
-    }
-  });
-
+  // easter egg: clique no texto final escondido
   $("hiddenNote").addEventListener("click", ()=>{
     showModal("Cartada final", "SYS-LOVE",
       "Algumas pessoas não chegam pra ocupar espaço.<br>" +
       "Chegam pra fazer o lugar existir.<br><br>" +
       "<b>Você é uma delas.</b>");
+    buzz([25,25,60]);
   });
 </script>
 </body>
